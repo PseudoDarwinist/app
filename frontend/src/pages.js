@@ -299,10 +299,10 @@ export const LessonPage = () => {
 
   if (!course || !lesson) {
     return (
-      <div className="min-h-screen flex items-center justify-center">
+      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-purple-50 via-blue-50 to-indigo-100">
         <div className="text-center">
           <h1 className="text-2xl font-bold text-gray-900 mb-4">Lesson not found</h1>
-          <Link to={`/courses/${courseId}`} className="text-blue-600 hover:underline">
+          <Link to={`/courses/${courseId}`} className="text-purple-600 hover:underline">
             Back to course
           </Link>
         </div>
@@ -325,94 +325,156 @@ export const LessonPage = () => {
   const currentPracticeQuestion = lesson.content.practice[currentQuestion];
 
   return (
-    <div className="min-h-screen bg-gray-50">
-      <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+    <div className="min-h-screen bg-gradient-to-br from-purple-50 via-blue-50 to-indigo-100">
+      <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {/* Navigation */}
         <div className="mb-6">
-          <Link to={`/courses/${courseId}`} className="text-blue-600 hover:underline mb-4 inline-block">
-            ← Back to {course.title}
+          <Link to={`/courses/${courseId}`} className="text-purple-600 hover:text-purple-800 font-medium mb-4 inline-flex items-center">
+            <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+            </svg>
+            Back to {course.title}
           </Link>
         </div>
 
         {/* Lesson Header */}
-        <div className="bg-white rounded-xl shadow-lg p-6 mb-6">
-          <h1 className="text-3xl font-bold text-gray-900 mb-2">{lesson.title}</h1>
-          <p className="text-gray-600">{lesson.description}</p>
+        <div className="bg-white rounded-2xl shadow-xl p-8 mb-6 border border-purple-100">
+          <div className="flex items-start justify-between">
+            <div className="flex-1">
+              <div className="flex items-center space-x-3 mb-4">
+                <span className="text-3xl">📱</span>
+                <div>
+                  <h1 className="text-3xl font-bold bg-gradient-to-r from-purple-600 to-blue-600 bg-clip-text text-transparent">
+                    {lesson.title}
+                  </h1>
+                  <p className="text-gray-600 text-lg mt-1">{lesson.description}</p>
+                </div>
+              </div>
+            </div>
+            <div className="flex items-center space-x-4">
+              <div className="text-center">
+                <div className="text-2xl font-bold text-purple-600">1</div>
+                <div className="text-xs text-gray-500">Lesson</div>
+              </div>
+              <div className="text-center">
+                <div className="text-2xl font-bold text-blue-600">{lesson.content.practice.length}</div>
+                <div className="text-xs text-gray-500">Questions</div>
+              </div>
+            </div>
+          </div>
         </div>
 
         {/* Lesson Content */}
-        <div className="bg-white rounded-xl shadow-lg">
+        <div className="bg-white rounded-2xl shadow-xl border border-purple-100 overflow-hidden">
           {/* Tabs */}
-          <div className="border-b border-gray-200">
+          <div className="border-b border-gray-200 bg-gradient-to-r from-purple-50 to-blue-50">
             <nav className="flex">
               <button
                 onClick={() => setCurrentTab('theory')}
-                className={`px-6 py-4 text-sm font-medium ${
+                className={`px-8 py-4 text-lg font-medium transition-all duration-300 ${
                   currentTab === 'theory'
-                    ? 'border-b-2 border-purple-500 text-purple-600'
-                    : 'text-gray-500 hover:text-gray-700'
+                    ? 'border-b-3 border-purple-500 text-purple-600 bg-white'
+                    : 'text-gray-500 hover:text-gray-700 hover:bg-white/50'
                 }`}
               >
-                Theory
+                <span className="mr-2">📖</span>
+                Theory & Examples
               </button>
               <button
                 onClick={() => setCurrentTab('practice')}
-                className={`px-6 py-4 text-sm font-medium ${
+                className={`px-8 py-4 text-lg font-medium transition-all duration-300 ${
                   currentTab === 'practice'
-                    ? 'border-b-2 border-purple-500 text-purple-600'
-                    : 'text-gray-500 hover:text-gray-700'
+                    ? 'border-b-3 border-purple-500 text-purple-600 bg-white'
+                    : 'text-gray-500 hover:text-gray-700 hover:bg-white/50'
                 }`}
               >
+                <span className="mr-2">⚡</span>
                 Practice ({lesson.content.practice.length} questions)
               </button>
             </nav>
           </div>
 
           {/* Tab Content */}
-          <div className="p-6">
+          <div className="p-8">
             {currentTab === 'theory' && (
-              <div 
-                className="prose prose-lg max-w-none"
-                dangerouslySetInnerHTML={{ __html: lesson.content.theory }}
-              />
+              <div>
+                <div className="prose prose-lg max-w-none prose-purple">
+                  <div dangerouslySetInnerHTML={{ __html: lesson.content.theory }} />
+                </div>
+                
+                <div className="mt-8 bg-gradient-to-r from-purple-600 to-blue-600 rounded-2xl p-6 text-white">
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <h3 className="text-xl font-bold mb-2">Ready to practice?</h3>
+                      <p className="text-purple-100">Test your knowledge with interactive questions</p>
+                    </div>
+                    <button
+                      onClick={() => setCurrentTab('practice')}
+                      className="bg-white text-purple-600 px-6 py-3 rounded-xl font-semibold hover:bg-gray-100 transition-colors"
+                    >
+                      Start Practice →
+                    </button>
+                  </div>
+                </div>
+              </div>
             )}
 
             {currentTab === 'practice' && currentPracticeQuestion && (
               <div>
-                <div className="mb-4">
-                  <span className="text-sm text-gray-500">
-                    Question {currentQuestion + 1} of {lesson.content.practice.length}
-                  </span>
+                <div className="mb-6">
+                  <div className="flex items-center justify-between mb-4">
+                    <span className="bg-gradient-to-r from-purple-500 to-blue-500 text-white px-4 py-2 rounded-full text-sm font-semibold">
+                      Question {currentQuestion + 1} of {lesson.content.practice.length}
+                    </span>
+                    <div className="flex items-center space-x-2">
+                      <div className="w-32 bg-gray-200 rounded-full h-2">
+                        <div 
+                          className="bg-gradient-to-r from-purple-500 to-blue-500 h-2 rounded-full transition-all duration-300"
+                          style={{width: `${((currentQuestion + 1) / lesson.content.practice.length) * 100}%`}}
+                        ></div>
+                      </div>
+                    </div>
+                  </div>
                 </div>
                 
-                <div className="mb-6">
-                  <h3 className="text-xl font-semibold text-gray-900 mb-4">
+                <div className="mb-8">
+                  <h3 className="text-2xl font-bold text-gray-900 mb-6 leading-relaxed">
                     {currentPracticeQuestion.question}
                   </h3>
                   
-                  <div className="space-y-3">
+                  <div className="space-y-4">
                     {currentPracticeQuestion.options.map((option, index) => (
                       <button
                         key={index}
                         onClick={() => setSelectedAnswer(index)}
                         disabled={showResults}
-                        className={`w-full text-left p-4 rounded-lg border-2 transition-colors ${
+                        className={`w-full text-left p-6 rounded-xl border-2 transition-all duration-300 transform hover:scale-102 ${
                           selectedAnswer === index
                             ? showResults
                               ? index === currentPracticeQuestion.correct
-                                ? 'border-green-500 bg-green-50'
-                                : 'border-red-500 bg-red-50'
-                              : 'border-purple-500 bg-purple-50'
+                                ? 'border-green-500 bg-green-50 shadow-lg'
+                                : 'border-red-500 bg-red-50 shadow-lg'
+                              : 'border-purple-500 bg-purple-50 shadow-lg'
                             : showResults && index === currentPracticeQuestion.correct
-                            ? 'border-green-500 bg-green-50'
-                            : 'border-gray-200 hover:border-gray-300'
+                            ? 'border-green-500 bg-green-50 shadow-lg'
+                            : 'border-gray-200 hover:border-purple-300 hover:bg-purple-25 hover:shadow-md'
                         }`}
                       >
                         <div className="flex items-center">
-                          <span className="w-6 h-6 rounded-full border-2 border-gray-400 flex items-center justify-center mr-3 text-sm font-semibold">
+                          <span className={`w-8 h-8 rounded-full border-2 flex items-center justify-center mr-4 text-sm font-bold transition-colors ${
+                            selectedAnswer === index
+                              ? showResults
+                                ? index === currentPracticeQuestion.correct
+                                  ? 'border-green-500 bg-green-500 text-white'
+                                  : 'border-red-500 bg-red-500 text-white'
+                                : 'border-purple-500 bg-purple-500 text-white'
+                              : showResults && index === currentPracticeQuestion.correct
+                              ? 'border-green-500 bg-green-500 text-white'
+                              : 'border-gray-400 text-gray-400'
+                          }`}>
                             {String.fromCharCode(65 + index)}
                           </span>
-                          <span className="whitespace-pre-line">{option}</span>
+                          <span className="whitespace-pre-line text-lg">{option}</span>
                         </div>
                       </button>
                     ))}
@@ -420,9 +482,14 @@ export const LessonPage = () => {
                 </div>
 
                 {showResults && (
-                  <div className="mb-6 p-4 bg-blue-50 rounded-lg">
-                    <h4 className="font-semibold text-blue-900 mb-2">Explanation:</h4>
-                    <p className="text-blue-800">{currentPracticeQuestion.explanation}</p>
+                  <div className="mb-8 p-6 bg-gradient-to-r from-blue-50 to-indigo-50 rounded-2xl border border-blue-200">
+                    <div className="flex items-start space-x-3">
+                      <span className="text-2xl">💡</span>
+                      <div>
+                        <h4 className="font-bold text-blue-900 mb-2 text-lg">Explanation:</h4>
+                        <p className="text-blue-800 leading-relaxed">{currentPracticeQuestion.explanation}</p>
+                      </div>
+                    </div>
                   </div>
                 )}
 
@@ -431,7 +498,7 @@ export const LessonPage = () => {
                     <button
                       onClick={handleAnswerSubmit}
                       disabled={selectedAnswer === null}
-                      className="bg-purple-600 hover:bg-purple-700 disabled:bg-gray-400 text-white px-6 py-2 rounded-lg font-semibold transition-colors"
+                      className="bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 disabled:from-gray-400 disabled:to-gray-500 text-white px-8 py-4 rounded-xl font-semibold transition-all duration-300 transform hover:scale-105 disabled:transform-none"
                     >
                       Submit Answer
                     </button>
@@ -440,16 +507,16 @@ export const LessonPage = () => {
                       {currentQuestion < lesson.content.practice.length - 1 ? (
                         <button
                           onClick={handleNextQuestion}
-                          className="bg-purple-600 hover:bg-purple-700 text-white px-6 py-2 rounded-lg font-semibold transition-colors"
+                          className="bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 text-white px-8 py-4 rounded-xl font-semibold transition-all duration-300 transform hover:scale-105"
                         >
-                          Next Question
+                          Next Question →
                         </button>
                       ) : (
                         <Link
                           to={`/courses/${courseId}`}
-                          className="bg-green-600 hover:bg-green-700 text-white px-6 py-2 rounded-lg font-semibold transition-colors inline-block"
+                          className="bg-gradient-to-r from-green-600 to-emerald-600 hover:from-green-700 hover:to-emerald-700 text-white px-8 py-4 rounded-xl font-semibold transition-all duration-300 transform hover:scale-105 inline-block"
                         >
-                          Complete Lesson
+                          🎉 Complete Lesson
                         </Link>
                       )}
                     </>

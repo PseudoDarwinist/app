@@ -23,7 +23,7 @@ export const Header = () => {
             <h1 className="text-2xl font-bold text-gray-900">Brilliant</h1>
           </div>
           <nav className="hidden md:flex items-center space-x-8">
-            <a href="#courses" className="text-gray-700 hover:text-gray-900 transition-colors">Courses</a>
+            <Link to="/courses" className="text-gray-700 hover:text-gray-900 transition-colors">Courses</Link>
             <a href="#today" className="text-gray-700 hover:text-gray-900 transition-colors">Today</a>
             <a href="#pricing" className="text-gray-700 hover:text-gray-900 transition-colors">Pricing</a>
           </nav>

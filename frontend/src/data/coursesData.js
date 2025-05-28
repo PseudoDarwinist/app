@@ -138,6 +138,18 @@ Text("This is a very long text that will automatically wrap to multiple lines wh
             description: 'Master VStack, HStack, and ZStack through building a real Instagram-like photo app.',
             completed: false,
             content: {
+              visualization: {
+                analogy: "Think of SwiftUI Stacks like organizing your desk 🗂️ - VStack is stacking papers vertically, HStack is arranging items side by side, and ZStack is layering transparencies on top of each other",
+                explanation: "Just like organizing a workspace, each stack type serves a specific purpose: VStack creates vertical flows (like reading a document top to bottom), HStack creates horizontal flows (like tools on a toolbar), and ZStack creates layered compositions (like placing a sticky note on top of a document). The magic happens when you combine them - like creating organized filing systems with folders, tabs, and labels all working together!",
+                image: "https://images.unsplash.com/photo-1515879218367-8466d910aaa4",
+                visualTips: [
+                  "📚 VStack = Stacking books on a shelf (gravity pulls items down)",
+                  "🃏 HStack = Arranging playing cards in your hand (side by side)",
+                  "📄 ZStack = Layering transparent sheets (each layer sits on top)",
+                  "🏗️ Nested stacks = Building complex furniture from simple pieces",
+                  "⚖️ Alignment is like choosing where to place your anchor point!"
+                ]
+              },
               theory: `
                 <h2>🏗️ Building PhotoShare: A Real Instagram-Style App</h2>
                 <p><strong>Today we're building a complete photo-sharing app called "PhotoShare" to master SwiftUI layout systems.</strong></p>

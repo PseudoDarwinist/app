@@ -329,7 +329,8 @@ export const LessonPage = () => {
   const generateAIVisualization = async () => {
     setGeneratingVisualization(true);
     try {
-      const response = await fetch(`${import.meta.env.REACT_APP_BACKEND_URL || process.env.REACT_APP_BACKEND_URL}/api/generate-visualization`, {
+      const backendUrl = process.env.REACT_APP_BACKEND_URL || 'http://localhost:8001';
+      const response = await fetch(`${backendUrl}/api/generate-visualization`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -356,7 +357,8 @@ export const LessonPage = () => {
   const generateAIImage = async () => {
     setGeneratingImage(true);
     try {
-      const response = await fetch(`${import.meta.env.REACT_APP_BACKEND_URL || process.env.REACT_APP_BACKEND_URL}/api/generate-concept-image`, {
+      const backendUrl = process.env.REACT_APP_BACKEND_URL || 'http://localhost:8001';
+      const response = await fetch(`${backendUrl}/api/generate-concept-image`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

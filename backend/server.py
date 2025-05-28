@@ -5,10 +5,26 @@ import os
 import base64
 import asyncio
 from dotenv import load_dotenv
-from emergentintegrations.llm.chat import LlmChat, UserMessage
-from emergentintegrations.llm.openai.image_generation import OpenAIImageGeneration
+from pathlib import Path
 
-load_dotenv()
+# Use our fallback implementation instead of emergentintegrations
+try:
+    from emergentintegrations.llm.chat import LlmChat, UserMessage
+    from emergentintegrations.llm.openai.image_generation import OpenAIImageGeneration
+except ImportError:
+    # Fallback to our local implementation
+    from emergentintegrations_fallback import LlmChat, UserMessage, OpenAIImageGeneration
+
+# Load environment variables from the backend directory
+env_path = Path(__file__).parent / '.env'
+load_dotenv(dotenv_path=env_path)
+
+# Debug: Check if API key is loaded
+openai_api_key = os.getenv("OPENAI_API_KEY")
+if openai_api_key:
+    print(f"✅ OpenAI API key loaded successfully (starts with: {openai_api_key[:10]}...)")
+else:
+    print("❌ No OpenAI API key found in environment variables")
 
 app = FastAPI()
 
@@ -48,11 +64,16 @@ async def generate_visualization(request: VisualizationRequest):
     """Generate educational visualization tips and analogies using GPT-4o"""
     try:
         openai_key = os.getenv("OPENAI_API_KEY")
-        if not openai_key or openai_key == "your-openai-api-key-here":
-            raise HTTPException(status_code=400, detail="OpenAI API key not configured")
+        print(f"Debug: API key check - {'Found' if openai_key else 'Not found'}")
         
-        # Try OpenAI first, fallback to mock if quota exceeded
+        if not openai_key or openai_key == "your-openai-api-key-here":
+            print("❌ No valid OpenAI API key configured")
+            raise HTTPException(status_code=400, detail="OpenAI API key not configured. Please set OPENAI_API_KEY in your .env file.")
+        
+        # Try OpenAI API
         try:
+            print(f"🤖 Attempting to generate AI response for concept: {request.concept}")
+            
             # Create chat instance for concept explanation
             chat = LlmChat(
                 api_key=openai_key,
@@ -66,187 +87,95 @@ async def generate_visualization(request: VisualizationRequest):
             
             Context: {request.context}
             
-            Please provide:
-            1. A memorable analogy (like "HStack is like arranging cards side by side in your hand")
-            2. A clear explanation of how the analogy relates to the concept
-            3. 3-5 visual tips to help students remember and understand this concept
+            Please provide a JSON response with exactly these keys:
+            - "analogy": A memorable analogy (like "HStack is like arranging cards side by side in your hand")
+            - "explanation": A clear explanation of how the analogy relates to the concept
+            - "visual_tips": An array of 3-5 visual tips to help students remember this concept
             
-            Format your response as JSON with keys: "analogy", "explanation", "visual_tips" (array of strings)
+            Return only valid JSON, no additional text.
             """
             
             user_message = UserMessage(text=prompt)
             response = await chat.send_message(user_message)
             
-            # Parse response and return structured data
-            return VisualizationResponse(
-                analogy=f"AI Generated: Think of {request.concept} like organizing your workspace - each element has its proper place and relationship to others.",
-                explanation=f"The AI analyzed {request.concept} and suggests viewing it as a systematic organization tool, where each component maintains its function while contributing to the overall structure.",
-                visual_tips=[
-                    f"🧠 AI Insight: {request.concept} follows predictable patterns",
-                    "🔧 Each element serves a specific purpose in the layout",
-                    "📐 The arrangement follows logical visual hierarchy",
-                    "✨ Understanding the pattern helps predict behavior",
-                    "🎯 Practice with simple examples first, then build complexity"
-                ]
-            )
+            print(f"✅ Received response from OpenAI: {response[:100]}...")
+            
+            # Try to parse the JSON response
+            import json
+            try:
+                parsed_response = json.loads(response)
+                return VisualizationResponse(
+                    analogy=parsed_response.get("analogy", f"Think of {request.concept} as a fundamental building block"),
+                    explanation=parsed_response.get("explanation", f"The {request.concept} concept is essential for SwiftUI development"),
+                    visual_tips=parsed_response.get("visual_tips", [f"Remember that {request.concept} is important for layout"])
+                )
+            except json.JSONDecodeError:
+                print("⚠️ Failed to parse JSON response, using response as analogy")
+                return VisualizationResponse(
+                    analogy=f"AI Generated: {response[:200]}...",
+                    explanation=f"The AI provided insights about {request.concept} for SwiftUI development",
+                    visual_tips=[
+                        f"🧠 AI Insight: {request.concept} follows predictable patterns",
+                        "🔧 Each element serves a specific purpose in the layout",
+                        "📐 Understanding the pattern helps predict behavior"
+                    ]
+                )
             
         except Exception as api_error:
-            if "quota" in str(api_error).lower() or "limit" in str(api_error).lower():
-                # Provide beautiful fallback responses for quota/billing issues
-                fallback_responses = {
-                    "vstack": {
-                        "analogy": "Think of VStack like stacking dinner plates 🍽️ - each plate sits perfectly on top of the one below, creating a neat vertical tower",
-                        "explanation": "Just like stacking plates, VStack arranges UI elements vertically from top to bottom. Each element takes its turn in the stack, and gravity (the layout system) keeps everything aligned and organized. The first element goes on top, the second below it, and so on - creating a predictable, stable structure.",
-                        "visual_tips": [
-                            "📚 Imagine books on a shelf - each one stacked on top of the other",
-                            "🏗️ Like building blocks - start from the bottom and stack upward",
-                            "📄 Each element is like a page in a document - read from top to bottom",
-                            "⚖️ The stack stays balanced and aligned automatically",
-                            "🎯 Perfect for forms, menus, and vertical lists"
-                        ]
-                    },
-                    "hstack": {
-                        "analogy": "Think of HStack like arranging photos on a mantelpiece 🖼️ - each photo stands side by side, creating a beautiful horizontal display",
-                        "explanation": "Just like arranging items horizontally on a shelf, HStack places UI elements side by side from left to right. Each element has its own space while maintaining perfect alignment with its neighbors, creating clean horizontal layouts that feel natural and organized.",
-                        "visual_tips": [
-                            "🃏 Like playing cards arranged in your hand - side by side",
-                            "🚗 Imagine cars parked in a row - each in its own space",
-                            "📐 Elements line up like soldiers in formation",
-                            "🎨 Perfect for navigation bars and button groups",
-                            "⭐ Creates clean, organized horizontal layouts"
-                        ]
-                    },
-                    "text": {
-                        "analogy": "Think of Text modifiers like applying makeup layers 💄 - each modifier adds a new layer of style without changing the base text",
-                        "explanation": "Just like makeup, modifiers are applied in sequence and each one builds upon the previous effect. You start with bare text (like a clean face) and add layers: font style (foundation), color (blush), background (highlighter), and padding (contouring). The order matters!",
-                        "visual_tips": [
-                            "🎨 Modifiers chain like beauty filters - each one transforms the previous result",
-                            "📏 Font styles are like clothing sizes - they scale appropriately", 
-                            "🌈 Colors flow like paint on canvas - foreground colors the text, background colors the container",
-                            "📦 Padding is like adding cushioning around a fragile package",
-                            "✨ Remember: read modifiers from inside-out, like peeling an onion!"
-                        ]
-                    }
-                }
-                
-                # Get concept-specific response or generic one
-                concept_key = request.concept.lower().strip()
-                if concept_key in fallback_responses:
-                    return VisualizationResponse(**fallback_responses[concept_key])
-                else:
-                    return VisualizationResponse(
-                        analogy=f"Think of {request.concept} like organizing your digital workspace 🖥️ - everything has its place and purpose",
-                        explanation=f"In SwiftUI, {request.concept} works like a well-organized system where each component knows its role and relationship to others. Just like arranging items on your desk for maximum efficiency, {request.concept} helps create clean, functional interfaces.",
-                        visual_tips=[
-                            f"🎯 {request.concept} provides structure and organization",
-                            "🔧 Each element serves a specific function",
-                            "📐 Layout follows predictable, logical patterns",
-                            "✨ Understanding the basics helps with complex layouts",
-                            "🚀 Practice with simple examples first"
-                        ]
-                    )
-            else:
-                raise api_error
+            print(f"❌ OpenAI API Error: {str(api_error)}")
+            raise HTTPException(status_code=500, detail=f"OpenAI API Error: {str(api_error)}")
         
     except Exception as e:
-        if "quota" not in str(e).lower() and "limit" not in str(e).lower():
-            raise HTTPException(status_code=500, detail=f"Error generating visualization: {str(e)}")
-        else:
-            # Already handled above
-            raise e
+        print(f"❌ General Error: {str(e)}")
+        raise HTTPException(status_code=500, detail=f"Error generating visualization: {str(e)}")
 
 @app.post("/api/generate-concept-image", response_model=ImageResponse)
 async def generate_concept_image(request: ImageGenerationRequest):
-    """Generate visual illustrations for SwiftUI concepts using DALL-E 3"""
+    """Generate visual illustrations for SwiftUI concepts using GPT-4o Responses API"""
     try:
         openai_key = os.getenv("OPENAI_API_KEY")
+        print(f"Debug: Image generation - API key check - {'Found' if openai_key else 'Not found'}")
+        
         if not openai_key or openai_key == "your-openai-api-key-here":
-            raise HTTPException(status_code=400, detail="OpenAI API key not configured")
+            print("❌ No valid OpenAI API key configured for image generation")
+            raise HTTPException(status_code=400, detail="OpenAI API key not configured. Please set OPENAI_API_KEY in your .env file.")
         
         try:
-            # Create image generator
-            image_gen = OpenAIImageGeneration(api_key=openai_key)
+            print(f"🎨 Attempting to generate AI image for concept: {request.concept}")
             
-            # Enhanced prompt for educational diagrams
-            enhanced_prompt = f"""
-            Create a clean, educational diagram illustration for SwiftUI concept: {request.concept}
+            # Create enhanced prompt for SwiftUI concept visualization
+            enhanced_prompt = f"""Create a clean, educational diagram showing the SwiftUI concept '{request.concept}'. 
+            The image should be:
+            - Technical and educational in style
+            - Show code structure or UI layout visually
+            - Use clean, modern design with clear labels
+            - Suitable for a programming tutorial
+            - Focus on the concept: {request.concept}"""
             
-            Style requirements:
-            - Clean, minimalist design with soft colors
-            - Educational diagram style, not photorealistic
-            - Clear visual hierarchy and easy to understand
-            - Suitable for learning materials
-            - Professional but friendly appearance
-            
-            Content: {request.prompt}
-            
-            The image should help students visualize and understand the concept clearly.
-            """
-            
-            # Generate image
-            images = await image_gen.generate_images(
+            # Use GPT-4o with Responses API for image generation
+            image_generator = OpenAIImageGeneration(openai_key)
+            image_bytes_list = await image_generator.generate_images(
                 prompt=enhanced_prompt,
-                model="gpt-image-1",
+                model="gpt-4o",  # Use GPT-4o with Responses API
                 number_of_images=1
             )
             
             # Convert to base64
-            if images and len(images) > 0:
-                image_base64 = base64.b64encode(images[0]).decode('utf-8')
+            if image_bytes_list and len(image_bytes_list) > 0:
+                image_base64 = base64.b64encode(image_bytes_list[0]).decode('utf-8')
+                print(f"✅ Successfully generated image for {request.concept}")
                 return ImageResponse(image_base64=image_base64, concept=request.concept)
             else:
+                print("❌ No image was generated by GPT-4o")
                 raise HTTPException(status_code=500, detail="No image was generated")
                 
         except Exception as api_error:
-            if "quota" in str(api_error).lower() or "limit" in str(api_error).lower():
-                # Provide a placeholder educational image encoded as base64
-                # This is a simple colored rectangle with text as fallback
-                import io
-                from PIL import Image, ImageDraw, ImageFont
-                import base64
-                
-                # Create a beautiful educational placeholder
-                img = Image.new('RGB', (400, 300), color='#f8fafc')
-                draw = ImageDraw.Draw(img)
-                
-                # Add gradient background
-                for i in range(300):
-                    r = int(248 + (168 - 248) * i / 300)  # From light to purple
-                    g = int(250 + (199 - 250) * i / 300)
-                    b = int(252 + (248 - 252) * i / 300)
-                    draw.rectangle([0, i, 400, i+1], fill=(r, g, b))
-                
-                # Add concept title
-                try:
-                    # Try to use a system font
-                    font_large = ImageFont.truetype("/usr/share/fonts/truetype/liberation/LiberationSans-Bold.ttf", 24)
-                    font_small = ImageFont.truetype("/usr/share/fonts/truetype/liberation/LiberationSans-Regular.ttf", 16)
-                except:
-                    # Fallback to default font
-                    font_large = ImageFont.load_default()
-                    font_small = ImageFont.load_default()
-                
-                # Add text content
-                draw.text((200, 80), f"📱 {request.concept}", fill='#4c1d95', anchor="mm", font=font_large)
-                draw.text((200, 120), "Educational Concept", fill='#6b21a8', anchor="mm", font=font_small)
-                draw.text((200, 180), "✨ AI-Powered Learning", fill='#7c3aed', anchor="mm", font=font_small)
-                draw.text((200, 220), "Quota limit reached - using fallback", fill='#8b5cf6', anchor="mm", font=font_small)
-                
-                # Convert to base64
-                buffered = io.BytesIO()
-                img.save(buffered, format="PNG")
-                img_base64 = base64.b64encode(buffered.getvalue()).decode('utf-8')
-                
-                return ImageResponse(image_base64=img_base64, concept=request.concept)
-            else:
-                raise api_error
+            print(f"❌ OpenAI Image API Error: {str(api_error)}")
+            raise HTTPException(status_code=500, detail=f"OpenAI Image API Error: {str(api_error)}")
             
     except Exception as e:
-        if "quota" not in str(e).lower() and "limit" not in str(e).lower():
-            raise HTTPException(status_code=500, detail=f"Error generating image: {str(e)}")
-        else:
-            # Already handled above
-            raise e
+        print(f"❌ General Image Error: {str(e)}")
+        raise HTTPException(status_code=500, detail=f"Error generating image: {str(e)}")
 
 @app.post("/api/generate-ui-mockup")
 async def generate_ui_mockup(request: ImageGenerationRequest):
@@ -274,7 +203,7 @@ async def generate_ui_mockup(request: ImageGenerationRequest):
         
         images = await image_gen.generate_images(
             prompt=ui_prompt,
-            model="gpt-image-1",
+            model="gpt-4o",
             number_of_images=1
         )
         

@@ -291,7 +291,7 @@ export const DailyProgressSection = () => {
               
               <div className="grid grid-cols-7 gap-2">
                 {['M', 'T', 'W', 'T', 'F', 'S', 'S'].map((day, index) => (
-                  <div key={day} className="text-center">
+                  <div key={`${day}-${index}`} className="text-center">
                     <div className="text-sm text-gray-400 mb-2">{day}</div>
                     <div className={`w-8 h-8 rounded-lg flex items-center justify-center ${
                       index < 3 ? 'bg-orange-500' : 'bg-gray-700'

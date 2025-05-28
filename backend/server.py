@@ -94,7 +94,7 @@ async def generate_visualization(request: VisualizationRequest):
             if "quota" in str(api_error).lower() or "limit" in str(api_error).lower():
                 # Provide beautiful fallback responses for quota/billing issues
                 fallback_responses = {
-                    "VStack": {
+                    "vstack": {
                         "analogy": "Think of VStack like stacking dinner plates 🍽️ - each plate sits perfectly on top of the one below, creating a neat vertical tower",
                         "explanation": "Just like stacking plates, VStack arranges UI elements vertically from top to bottom. Each element takes its turn in the stack, and gravity (the layout system) keeps everything aligned and organized. The first element goes on top, the second below it, and so on - creating a predictable, stable structure.",
                         "visual_tips": [
@@ -105,7 +105,7 @@ async def generate_visualization(request: VisualizationRequest):
                             "🎯 Perfect for forms, menus, and vertical lists"
                         ]
                     },
-                    "HStack": {
+                    "hstack": {
                         "analogy": "Think of HStack like arranging photos on a mantelpiece 🖼️ - each photo stands side by side, creating a beautiful horizontal display",
                         "explanation": "Just like arranging items horizontally on a shelf, HStack places UI elements side by side from left to right. Each element has its own space while maintaining perfect alignment with its neighbors, creating clean horizontal layouts that feel natural and organized.",
                         "visual_tips": [
@@ -114,6 +114,17 @@ async def generate_visualization(request: VisualizationRequest):
                             "📐 Elements line up like soldiers in formation",
                             "🎨 Perfect for navigation bars and button groups",
                             "⭐ Creates clean, organized horizontal layouts"
+                        ]
+                    },
+                    "text": {
+                        "analogy": "Think of Text modifiers like applying makeup layers 💄 - each modifier adds a new layer of style without changing the base text",
+                        "explanation": "Just like makeup, modifiers are applied in sequence and each one builds upon the previous effect. You start with bare text (like a clean face) and add layers: font style (foundation), color (blush), background (highlighter), and padding (contouring). The order matters!",
+                        "visual_tips": [
+                            "🎨 Modifiers chain like beauty filters - each one transforms the previous result",
+                            "📏 Font styles are like clothing sizes - they scale appropriately", 
+                            "🌈 Colors flow like paint on canvas - foreground colors the text, background colors the container",
+                            "📦 Padding is like adding cushioning around a fragile package",
+                            "✨ Remember: read modifiers from inside-out, like peeling an onion!"
                         ]
                     }
                 }

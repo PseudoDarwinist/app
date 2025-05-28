@@ -852,12 +852,17 @@ export const LessonPage = () => {
                           Next Question →
                         </button>
                       ) : (
-                        <Link
-                          to={`/courses/${courseId}`}
-                          className="bg-gradient-to-r from-green-600 to-emerald-600 hover:from-green-700 hover:to-emerald-700 text-white px-8 py-4 rounded-xl font-semibold transition-all duration-300 transform hover:scale-105 inline-block"
+                        <button
+                          onClick={handleCompleteLesson}
+                          disabled={isLessonCompleted}
+                          className={`${
+                            isLessonCompleted 
+                              ? 'bg-green-600 cursor-not-allowed' 
+                              : 'bg-gradient-to-r from-green-600 to-emerald-600 hover:from-green-700 hover:to-emerald-700 transform hover:scale-105'
+                          } text-white px-8 py-4 rounded-xl font-semibold transition-all duration-300 inline-block`}
                         >
-                          🎉 Complete Lesson
-                        </Link>
+                          {isLessonCompleted ? '✅ Lesson Completed!' : '🎉 Complete Lesson'}
+                        </button>
                       )}
                     </>
                   )}

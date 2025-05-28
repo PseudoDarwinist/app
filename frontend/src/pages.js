@@ -292,10 +292,14 @@ export const LessonPage = () => {
   const navigate = useNavigate();
   const course = getCourse(courseId);
   const lesson = getLesson(courseId, lessonId);
-  const [currentTab, setCurrentTab] = useState('theory');
+  const [currentTab, setCurrentTab] = useState('visualization');
   const [selectedAnswer, setSelectedAnswer] = useState(null);
   const [showResults, setShowResults] = useState(false);
   const [currentQuestion, setCurrentQuestion] = useState(0);
+  const [generatingImage, setGeneratingImage] = useState(false);
+  const [aiGeneratedImage, setAiGeneratedImage] = useState(null);
+  const [generatingVisualization, setGeneratingVisualization] = useState(false);
+  const [aiVisualization, setAiVisualization] = useState(null);
 
   if (!course || !lesson) {
     return (
@@ -322,11 +326,72 @@ export const LessonPage = () => {
     }
   };
 
+  const generateAIVisualization = async () => {
+    setGeneratingVisualization(true);
+    try {
+      const response = await fetch(`${import.meta.env.REACT_APP_BACKEND_URL || process.env.REACT_APP_BACKEND_URL}/api/generate-visualization`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          concept: lesson.title,
+          context: lesson.description
+        }),
+      });
+      
+      if (response.ok) {
+        const data = await response.json();
+        setAiVisualization(data);
+      } else {
+        console.error('Failed to generate AI visualization');
+      }
+    } catch (error) {
+      console.error('Error generating AI visualization:', error);
+    } finally {
+      setGeneratingVisualization(false);
+    }
+  };
+
+  const generateAIImage = async () => {
+    setGeneratingImage(true);
+    try {
+      const response = await fetch(`${import.meta.env.REACT_APP_BACKEND_URL || process.env.REACT_APP_BACKEND_URL}/api/generate-concept-image`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          concept: lesson.title,
+          prompt: `Create an educational diagram showing ${lesson.title} concept in SwiftUI. Make it clean, modern, and easy to understand for iOS developers.`
+        }),
+      });
+      
+      if (response.ok) {
+        const data = await response.json();
+        setAiGeneratedImage(data.image_base64);
+      } else {
+        console.error('Failed to generate AI image');
+      }
+    } catch (error) {
+      console.error('Error generating AI image:', error);
+    } finally {
+      setGeneratingImage(false);
+    }
+  };
+
   const currentPracticeQuestion = lesson.content.practice[currentQuestion];
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-purple-50 via-blue-50 to-indigo-100">
-      <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      {/* Floating blob animations inspired by storybook.emergent.sh */}
+      <div className="fixed inset-0 overflow-hidden pointer-events-none">
+        <div className="absolute top-1/4 left-1/4 w-72 h-72 bg-gradient-to-br from-purple-400/20 to-pink-400/20 rounded-full filter blur-xl animate-pulse"></div>
+        <div className="absolute top-3/4 right-1/4 w-96 h-96 bg-gradient-to-br from-blue-400/20 to-indigo-400/20 rounded-full filter blur-xl animate-pulse" style={{animationDelay: '2s'}}></div>
+        <div className="absolute top-1/2 left-1/2 w-64 h-64 bg-gradient-to-br from-teal-400/20 to-green-400/20 rounded-full filter blur-xl animate-pulse" style={{animationDelay: '4s'}}></div>
+      </div>
+
+      <div className="relative max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {/* Navigation */}
         <div className="mb-6">
           <Link to={`/courses/${courseId}`} className="text-purple-600 hover:text-purple-800 font-medium mb-4 inline-flex items-center">
@@ -338,7 +403,7 @@ export const LessonPage = () => {
         </div>
 
         {/* Lesson Header */}
-        <div className="bg-white rounded-2xl shadow-xl p-8 mb-6 border border-purple-100">
+        <div className="bg-white/80 backdrop-blur-sm rounded-2xl shadow-xl p-8 mb-6 border border-purple-100">
           <div className="flex items-start justify-between">
             <div className="flex-1">
               <div className="flex items-center space-x-3 mb-4">
@@ -365,10 +430,21 @@ export const LessonPage = () => {
         </div>
 
         {/* Lesson Content */}
-        <div className="bg-white rounded-2xl shadow-xl border border-purple-100 overflow-hidden">
+        <div className="bg-white/80 backdrop-blur-sm rounded-2xl shadow-xl border border-purple-100 overflow-hidden">
           {/* Tabs */}
           <div className="border-b border-gray-200 bg-gradient-to-r from-purple-50 to-blue-50">
             <nav className="flex">
+              <button
+                onClick={() => setCurrentTab('visualization')}
+                className={`px-8 py-4 text-lg font-medium transition-all duration-300 ${
+                  currentTab === 'visualization'
+                    ? 'border-b-3 border-purple-500 text-purple-600 bg-white'
+                    : 'text-gray-500 hover:text-gray-700 hover:bg-white/50'
+                }`}
+              >
+                <span className="mr-2">🎨</span>
+                Visualization
+              </button>
               <button
                 onClick={() => setCurrentTab('theory')}
                 className={`px-8 py-4 text-lg font-medium transition-all duration-300 ${
@@ -396,6 +472,163 @@ export const LessonPage = () => {
 
           {/* Tab Content */}
           <div className="p-8">
+            {currentTab === 'visualization' && lesson.content.visualization && (
+              <div className="space-y-8">
+                {/* Nifty Tip Section */}
+                <div className="bg-gradient-to-br from-purple-100 to-blue-100 rounded-2xl p-8 border border-purple-200">
+                  <div className="flex items-start space-x-4">
+                    <div className="w-16 h-16 bg-gradient-to-br from-purple-500 to-blue-500 rounded-2xl flex items-center justify-center text-2xl flex-shrink-0">
+                      💡
+                    </div>
+                    <div className="flex-1">
+                      <h3 className="text-2xl font-bold text-gray-900 mb-4">Nifty Visualization Tip</h3>
+                      <p className="text-lg text-gray-800 font-medium mb-4">
+                        {lesson.content.visualization.analogy}
+                      </p>
+                      <p className="text-gray-700 leading-relaxed">
+                        {lesson.content.visualization.explanation}
+                      </p>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Visual Image */}
+                <div className="bg-white rounded-2xl p-6 border border-gray-200 shadow-lg">
+                  <h4 className="text-xl font-bold text-gray-900 mb-4">Visual Reference</h4>
+                  <div className="relative overflow-hidden rounded-xl">
+                    <img 
+                      src={lesson.content.visualization.image} 
+                      alt={`Visual representation of ${lesson.title}`}
+                      className="w-full h-64 object-cover"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent"></div>
+                  </div>
+                </div>
+
+                {/* Visual Tips */}
+                <div className="bg-white rounded-2xl p-6 border border-gray-200 shadow-lg">
+                  <h4 className="text-xl font-bold text-gray-900 mb-6">Quick Visual Tips</h4>
+                  <div className="grid gap-4">
+                    {lesson.content.visualization.visualTips.map((tip, index) => (
+                      <div key={index} className="flex items-start space-x-3 p-3 bg-gray-50 rounded-lg">
+                        <div className="w-8 h-8 bg-gradient-to-br from-purple-500 to-blue-500 rounded-full flex items-center justify-center text-white text-sm font-bold flex-shrink-0">
+                          {index + 1}
+                        </div>
+                        <p className="text-gray-700 font-medium">{tip}</p>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+
+                {/* AI Visualization Generator */}
+                <div className="bg-gradient-to-br from-indigo-100 to-purple-100 rounded-2xl p-8 border border-indigo-200">
+                  <h4 className="text-2xl font-bold text-gray-900 mb-4">🤖 AI-Powered Visualizations</h4>
+                  <p className="text-gray-700 mb-6">Generate custom explanations and images using GPT-4o to help you visualize this concept even better!</p>
+                  
+                  <div className="grid md:grid-cols-2 gap-6">
+                    {/* Generate Custom Explanation */}
+                    <div className="bg-white rounded-xl p-6 border border-indigo-200">
+                      <h5 className="font-bold text-lg mb-3">🧠 Generate Custom Explanation</h5>
+                      <p className="text-gray-600 mb-4">Get a personalized analogy and explanation from AI</p>
+                      <button
+                        onClick={generateAIVisualization}
+                        disabled={generatingVisualization}
+                        className="w-full bg-gradient-to-r from-purple-600 to-blue-600 text-white px-6 py-3 rounded-xl font-semibold hover:from-purple-700 hover:to-blue-700 transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+                      >
+                        {generatingVisualization ? (
+                          <span className="flex items-center justify-center">
+                            <svg className="animate-spin -ml-1 mr-3 h-5 w-5 text-white" fill="none" viewBox="0 0 24 24">
+                              <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                              <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                            </svg>
+                            Generating...
+                          </span>
+                        ) : (
+                          '✨ Generate Explanation'
+                        )}
+                      </button>
+                    </div>
+
+                    {/* Generate Custom Image */}
+                    <div className="bg-white rounded-xl p-6 border border-indigo-200">
+                      <h5 className="font-bold text-lg mb-3">🎨 Generate Concept Image</h5>
+                      <p className="text-gray-600 mb-4">Create a visual diagram using DALL-E 3</p>
+                      <button
+                        onClick={generateAIImage}
+                        disabled={generatingImage}
+                        className="w-full bg-gradient-to-r from-indigo-600 to-purple-600 text-white px-6 py-3 rounded-xl font-semibold hover:from-indigo-700 hover:to-purple-700 transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+                      >
+                        {generatingImage ? (
+                          <span className="flex items-center justify-center">
+                            <svg className="animate-spin -ml-1 mr-3 h-5 w-5 text-white" fill="none" viewBox="0 0 24 24">
+                              <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                              <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                            </svg>
+                            Generating...
+                          </span>
+                        ) : (
+                          '🎨 Generate Image'
+                        )}
+                      </button>
+                    </div>
+                  </div>
+
+                  {/* AI Generated Content Display */}
+                  {aiVisualization && (
+                    <div className="mt-6 bg-white rounded-xl p-6 border border-green-200">
+                      <h5 className="font-bold text-lg mb-3 text-green-800">🤖 AI Generated Explanation</h5>
+                      <div className="space-y-4">
+                        <div>
+                          <h6 className="font-semibold text-gray-900 mb-2">Analogy:</h6>
+                          <p className="text-gray-700 italic">"{aiVisualization.analogy}"</p>
+                        </div>
+                        <div>
+                          <h6 className="font-semibold text-gray-900 mb-2">Explanation:</h6>
+                          <p className="text-gray-700">{aiVisualization.explanation}</p>
+                        </div>
+                        <div>
+                          <h6 className="font-semibold text-gray-900 mb-2">Visual Tips:</h6>
+                          <ul className="list-disc list-inside space-y-1">
+                            {aiVisualization.visual_tips.map((tip, index) => (
+                              <li key={index} className="text-gray-700">{tip}</li>
+                            ))}
+                          </ul>
+                        </div>
+                      </div>
+                    </div>
+                  )}
+
+                  {aiGeneratedImage && (
+                    <div className="mt-6 bg-white rounded-xl p-6 border border-blue-200">
+                      <h5 className="font-bold text-lg mb-3 text-blue-800">🎨 AI Generated Image</h5>
+                      <div className="relative overflow-hidden rounded-xl">
+                        <img 
+                          src={`data:image/png;base64,${aiGeneratedImage}`} 
+                          alt={`AI generated visualization of ${lesson.title}`}
+                          className="w-full h-64 object-cover"
+                        />
+                      </div>
+                    </div>
+                  )}
+                </div>
+
+                {/* Continue to Theory */}
+                <div className="bg-gradient-to-r from-purple-600 to-blue-600 rounded-2xl p-6 text-white">
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <h3 className="text-xl font-bold mb-2">Ready to dive deeper?</h3>
+                      <p className="text-purple-100">Learn the technical details and see code examples</p>
+                    </div>
+                    <button
+                      onClick={() => setCurrentTab('theory')}
+                      className="bg-white text-purple-600 px-6 py-3 rounded-xl font-semibold hover:bg-gray-100 transition-colors"
+                    >
+                      Explore Theory →
+                    </button>
+                  </div>
+                </div>
+              </div>
+            )}
             {currentTab === 'theory' && (
               <div>
                 <div className="prose prose-lg max-w-none prose-purple">

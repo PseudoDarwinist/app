@@ -148,6 +148,7 @@ export const CourseCategoriesSection = () => {
       title: "Math",
       color: "from-blue-500 to-blue-600",
       image: "https://images.pexels.com/photos/159746/notebook-pen-pencil-education-159746.jpeg",
+      link: "/courses/mathematical-thinking",
       icon: (
         <svg fill="currentColor" viewBox="0 0 24 24" className="w-full h-full">
           <path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zM9 17H7v-7h2v7zm4 0h-2V7h2v10zm4 0h-2v-4h2v4z"/>
@@ -158,6 +159,7 @@ export const CourseCategoriesSection = () => {
       title: "Data Analysis",
       color: "from-orange-500 to-orange-600",
       image: "https://images.unsplash.com/photo-1532102235608-dc8fc689c9ab",
+      link: "/courses/data-analysis",
       icon: (
         <svg fill="currentColor" viewBox="0 0 24 24" className="w-full h-full">
           <path d="M16 6l2.29 2.29-4.88 4.88-4-4L2 16.59 3.41 18l6-6 4 4 6.3-6.29L22 12V6z"/>
@@ -168,6 +170,7 @@ export const CourseCategoriesSection = () => {
       title: "Computer Science",
       color: "from-purple-500 to-purple-600",
       image: "https://images.unsplash.com/photo-1488590528505-98d2b5aba04b",
+      link: "/courses/thinking-in-code",
       icon: (
         <svg fill="currentColor" viewBox="0 0 24 24" className="w-full h-full">
           <path d="M20,18C20.5,18 21,17.5 21,17V7C21,6.5 20.5,6 20,6H4C3.5,6 3,6.5 3,7V17C3,17.5 3.5,18 4,18H9V19H8V20H16V19H15V18H20M5,8H19V16H5V8Z"/>
@@ -178,6 +181,7 @@ export const CourseCategoriesSection = () => {
       title: "Programming & AI",
       color: "from-green-500 to-green-600",
       image: "https://images.pexels.com/photos/16053029/pexels-photo-16053029.jpeg",
+      link: "/courses/thinking-in-code",
       icon: (
         <svg fill="currentColor" viewBox="0 0 24 24" className="w-full h-full">
           <path d="M8,3A2,2 0 0,0 6,5V9A2,2 0 0,1 4,11H3V13H4A2,2 0 0,1 6,15V19A2,2 0 0,0 8,21H10V19H8V14A2,2 0 0,0 6,12A2,2 0 0,0 8,10V5H10V3M16,3A2,2 0 0,1 18,5V9A2,2 0 0,0 20,11H21V13H20A2,2 0 0,0 18,15V19A2,2 0 0,1 16,21H14V19H16V14A2,2 0 0,1 18,12A2,2 0 0,1 16,10V5H14V3H16Z"/>
@@ -188,6 +192,7 @@ export const CourseCategoriesSection = () => {
       title: "Science & Engineering",
       color: "from-teal-500 to-teal-600",
       image: "https://images.unsplash.com/photo-1494173853739-c21f58b16055",
+      link: "/courses",
       icon: (
         <svg fill="currentColor" viewBox="0 0 24 24" className="w-full h-full">
           <path d="M12,2A3,3 0 0,1 15,5V11C15,11.11 15,11.22 14.96,11.33L21,17.4V20A2,2 0 0,1 19,22H5A2,2 0 0,1 3,20V17.4L9.04,11.33C9,11.22 9,11.11 9,11V5A3,3 0 0,1 12,2M12,4A1,1 0 0,0 11,5V11H13V5A1,1 0 0,0 12,4Z"/>

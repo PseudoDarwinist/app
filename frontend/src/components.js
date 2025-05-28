@@ -20,19 +20,28 @@ export const Header = () => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16">
           <div className="flex items-center">
-            <Link to="/" className="text-2xl font-bold text-gray-900">Brilliant</Link>
+            <Link to="/" className="flex items-center space-x-2">
+              <div className="w-8 h-8 bg-gradient-to-br from-purple-600 to-blue-500 rounded-lg flex items-center justify-center">
+                <span className="text-white font-bold text-sm">AI</span>
+              </div>
+              <span className="text-2xl font-bold text-gray-900">AI-Tutor</span>
+            </Link>
           </div>
           <nav className="hidden md:flex items-center space-x-8">
             <Link to="/courses" className="text-gray-700 hover:text-gray-900 transition-colors">Courses</Link>
-            <a href="#today" className="text-gray-700 hover:text-gray-900 transition-colors">Today</a>
-            <a href="#pricing" className="text-gray-700 hover:text-gray-900 transition-colors">Pricing</a>
+            <a href="#progress" className="text-gray-700 hover:text-gray-900 transition-colors">Progress</a>
+            <a href="#practice" className="text-gray-700 hover:text-gray-900 transition-colors">Practice</a>
           </nav>
           <div className="flex items-center space-x-4">
+            <div className="hidden md:flex items-center space-x-2 text-sm text-gray-600">
+              <span>🔥</span>
+              <span>3 day streak</span>
+            </div>
             <button className="text-gray-700 hover:text-gray-900 transition-colors">
               Log in
             </button>
-            <button className="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded-lg transition-colors">
-              Get started
+            <button className="bg-gradient-to-r from-purple-600 to-blue-500 hover:from-purple-700 hover:to-blue-600 text-white px-4 py-2 rounded-lg transition-all transform hover:scale-105">
+              Start Learning
             </button>
           </div>
         </div>
@@ -41,55 +50,53 @@ export const Header = () => {
   );
 };
 
-// Animated Mathematical Icon Component
-export const MathIcon = ({ type, className = "" }) => {
+// Animated Code Icon Component
+export const CodeIcon = ({ type, className = "" }) => {
   const icons = {
-    formula: (
+    swift: (
       <div className={`relative ${className}`}>
-        <div className="w-16 h-16 bg-purple-100 rounded-lg flex items-center justify-center">
-          <svg className="w-8 h-8 text-purple-600" fill="currentColor" viewBox="0 0 24 24">
-            <path d="M12 2L2 7L12 12L22 7L12 2Z"/>
-            <path d="M2 17L12 22L22 17"/>
-            <path d="M2 12L12 17L22 12"/>
+        <div className="w-16 h-16 bg-gradient-to-br from-orange-400 to-red-500 rounded-2xl flex items-center justify-center shadow-lg">
+          <svg className="w-8 h-8 text-white" fill="currentColor" viewBox="0 0 24 24">
+            <path d="M7.508 0c-.287 0-.573 0-.86.002-.102.001-.197.027-.29.068-.09.04-.172.092-.242.158-.07.066-.126.145-.165.234-.04.089-.063.186-.063.286 0 .3.002.6.002.9v21.3c0 .287 0 .573-.002.86-.001.102-.027.197-.068.29-.04.09-.092.172-.158.242-.066.07-.145.126-.234.165-.089.04-.186.063-.286.063-.3 0-.6-.002-.9-.002H1.5c-.287 0-.573 0-.86.002-.102.001-.197.027-.29.068-.09.04-.172.092-.242.158-.07.066-.126.145-.165.234-.04.089-.063.186-.063.286 0 .3.002.6.002.9v.6c0 .3-.002.6-.002.9 0 .1.023.197.063.286.039.089.095.168.165.234.07.066.152.118.242.158.093.041.188.067.29.068.287.002.573.002.86.002h21c.287 0 .573 0 .86-.002.102-.001.197-.027.29-.068.09-.04.172-.092.242-.158.07-.066.126-.145.165-.234.04-.089.063-.186.063-.286 0-.3-.002-.6-.002-.9v-.6c0-.3.002-.6.002-.9 0-.1-.023-.197-.063-.286-.039-.089-.095-.168-.165-.234-.07-.066-.152-.118-.242-.158-.093-.041-.188-.067-.29-.068-.287-.002-.573-.002-.86-.002H7.508z"/>
           </svg>
         </div>
-        <div className="absolute -top-2 -right-2 w-4 h-4 bg-orange-400 rounded-full animate-pulse"></div>
+        <div className="absolute -top-2 -right-2 w-4 h-4 bg-blue-400 rounded-full animate-pulse"></div>
       </div>
     ),
-    graph: (
+    ui: (
       <div className={`relative ${className}`}>
-        <div className="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center">
-          <div className="w-6 h-6 border-2 border-blue-500 rounded-full"></div>
+        <div className="w-12 h-12 bg-gradient-to-br from-purple-400 to-pink-500 rounded-xl flex items-center justify-center">
+          <svg className="w-6 h-6 text-white" fill="currentColor" viewBox="0 0 24 24">
+            <path d="M4 6h16v2H4zm0 5h16v2H4zm0 5h16v2H4z"/>
+          </svg>
         </div>
-        <div className="absolute top-0 left-8 w-px h-6 bg-gray-300"></div>
-        <div className="absolute top-6 left-8 w-6 h-px bg-gray-300"></div>
       </div>
     ),
-    network: (
+    component: (
       <div className={`relative ${className}`}>
-        <div className="flex items-center space-x-2">
-          <div className="w-3 h-3 bg-blue-500 rounded-full"></div>
-          <div className="w-8 h-px bg-gray-300"></div>
+        <div className="flex items-center space-x-1">
           <div className="w-3 h-3 bg-purple-500 rounded-full"></div>
           <div className="w-8 h-px bg-gray-300"></div>
-          <div className="w-3 h-3 bg-orange-400 rounded-full"></div>
+          <div className="w-3 h-3 bg-blue-500 rounded-full"></div>
+          <div className="w-8 h-px bg-gray-300"></div>
+          <div className="w-3 h-3 bg-green-400 rounded-full"></div>
         </div>
       </div>
     )
   };
 
-  return icons[type] || icons.formula;
+  return icons[type] || icons.swift;
 };
 
 // Hero Section Component
 export const HeroSection = () => {
   return (
-    <section className="relative min-h-screen flex items-center justify-center bg-gradient-to-b from-gray-50 to-white overflow-hidden">
+    <section className="relative min-h-screen flex items-center justify-center bg-gradient-to-br from-purple-50 via-blue-50 to-indigo-100 overflow-hidden">
       {/* Animated Background Elements */}
       <div className="absolute inset-0 pointer-events-none">
-        <MathIcon type="formula" className="absolute top-1/4 left-1/4 animate-float" />
-        <MathIcon type="graph" className="absolute top-1/3 right-1/4 animate-float-delayed" />
-        <MathIcon type="network" className="absolute bottom-1/3 left-1/3 animate-float" />
+        <CodeIcon type="swift" className="absolute top-1/4 left-1/4 animate-float" />
+        <CodeIcon type="ui" className="absolute top-1/3 right-1/4 animate-float-delayed" />
+        <CodeIcon type="component" className="absolute bottom-1/3 left-1/3 animate-float" />
         <div className="absolute top-1/2 right-1/3 w-2 h-2 bg-orange-400 rounded-full animate-pulse"></div>
         <div className="absolute bottom-1/4 right-1/4 w-1 h-1 bg-purple-500 rounded-full animate-ping"></div>
       </div>
@@ -97,222 +104,226 @@ export const HeroSection = () => {
       <div className="relative z-10 max-w-4xl mx-auto px-4 text-center">
         <div className="mb-8">
           <div className="inline-flex items-center space-x-4 mb-6">
-            <MathIcon type="formula" className="animate-bounce" />
-            <h1 className="text-6xl md:text-8xl font-bold text-gray-900 leading-tight">
-              Learn
+            <CodeIcon type="swift" className="animate-bounce" />
+            <h1 className="text-6xl md:text-8xl font-bold bg-gradient-to-r from-purple-600 to-blue-600 bg-clip-text text-transparent leading-tight">
+              Master
             </h1>
-            <MathIcon type="network" className="animate-pulse" />
+            <CodeIcon type="component" className="animate-pulse" />
           </div>
-          <h1 className="text-6xl md:text-8xl font-bold text-gray-900 leading-tight mb-6">
-            by doing
+          <h1 className="text-6xl md:text-8xl font-bold bg-gradient-to-r from-blue-600 to-indigo-600 bg-clip-text text-transparent leading-tight mb-6">
+            SwiftUI
           </h1>
         </div>
         
         <p className="text-xl text-gray-600 mb-8 max-w-2xl mx-auto">
-          Interactive problem solving that's effective and fun.<br />
-          Get smarter in 15 minutes a day.
+          Your AI-powered tutor for mastering iOS development.<br />
+          Learn SwiftUI through interactive lessons and build beautiful apps.
         </p>
         
-        <Link
-          to="/courses"
-          className="bg-green-500 hover:bg-green-600 text-white px-8 py-4 rounded-lg text-lg font-semibold transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl inline-block"
-        >
-          Get started
-        </Link>
+        <div className="flex flex-col sm:flex-row gap-4 justify-center">
+          <Link
+            to="/courses"
+            className="bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 text-white px-8 py-4 rounded-lg text-lg font-semibold transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl inline-block"
+          >
+            Start Learning SwiftUI
+          </Link>
+          <button className="border-2 border-purple-600 text-purple-600 hover:bg-purple-600 hover:text-white px-8 py-4 rounded-lg text-lg font-semibold transition-all duration-300">
+            View Progress
+          </button>
+        </div>
+
+        {/* Stats */}
+        <div className="mt-16 grid grid-cols-1 md:grid-cols-3 gap-8 max-w-2xl mx-auto">
+          <div className="text-center">
+            <div className="text-3xl font-bold text-purple-600">24</div>
+            <div className="text-gray-600">Interactive Lessons</div>
+          </div>
+          <div className="text-center">
+            <div className="text-3xl font-bold text-blue-600">85</div>
+            <div className="text-gray-600">Practice Problems</div>
+          </div>
+          <div className="text-center">
+            <div className="text-3xl font-bold text-indigo-600">100%</div>
+            <div className="text-gray-600">iOS Focused</div>
+          </div>
+        </div>
       </div>
     </section>
   );
 };
 
-// Course Category Component
-export const CourseCategory = ({ title, icon, color, image, link }) => {
+// Course Focus Section
+export const CourseFocusSection = () => {
   return (
-    <Link to={link} className="group cursor-pointer">
-      <div className={`relative overflow-hidden rounded-xl bg-gradient-to-br ${color} p-6 h-48 transition-all duration-300 group-hover:scale-105 group-hover:shadow-xl`}>
-        <div className="absolute inset-0 opacity-20">
-          <img src={image} alt={title} className="w-full h-full object-cover" />
-        </div>
-        <div className="relative z-10">
-          <div className="w-12 h-12 mb-4 text-white">
-            {icon}
-          </div>
-          <h3 className="text-white text-lg font-semibold">{title}</h3>
-        </div>
-        <div className="absolute bottom-0 right-0 w-16 h-16 bg-white/10 rounded-tl-full"></div>
-      </div>
-    </Link>
-  );
-};
-
-// Course Categories Grid
-export const CourseCategoriesSection = () => {
-  const categories = [
-    {
-      title: "Math",
-      color: "from-blue-500 to-blue-600",
-      image: "https://images.pexels.com/photos/159746/notebook-pen-pencil-education-159746.jpeg",
-      link: "/courses/mathematical-thinking",
-      icon: (
-        <svg fill="currentColor" viewBox="0 0 24 24" className="w-full h-full">
-          <path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zM9 17H7v-7h2v7zm4 0h-2V7h2v10zm4 0h-2v-4h2v4z"/>
-        </svg>
-      )
-    },
-    {
-      title: "Data Analysis",
-      color: "from-orange-500 to-orange-600",
-      image: "https://images.unsplash.com/photo-1532102235608-dc8fc689c9ab",
-      link: "/courses/data-analysis",
-      icon: (
-        <svg fill="currentColor" viewBox="0 0 24 24" className="w-full h-full">
-          <path d="M16 6l2.29 2.29-4.88 4.88-4-4L2 16.59 3.41 18l6-6 4 4 6.3-6.29L22 12V6z"/>
-        </svg>
-      )
-    },
-    {
-      title: "Computer Science",
-      color: "from-purple-500 to-purple-600",
-      image: "https://images.unsplash.com/photo-1488590528505-98d2b5aba04b",
-      link: "/courses/thinking-in-code",
-      icon: (
-        <svg fill="currentColor" viewBox="0 0 24 24" className="w-full h-full">
-          <path d="M20,18C20.5,18 21,17.5 21,17V7C21,6.5 20.5,6 20,6H4C3.5,6 3,6.5 3,7V17C3,17.5 3.5,18 4,18H9V19H8V20H16V19H15V18H20M5,8H19V16H5V8Z"/>
-        </svg>
-      )
-    },
-    {
-      title: "Programming & AI",
-      color: "from-green-500 to-green-600",
-      image: "https://images.pexels.com/photos/16053029/pexels-photo-16053029.jpeg",
-      link: "/courses/thinking-in-code",
-      icon: (
-        <svg fill="currentColor" viewBox="0 0 24 24" className="w-full h-full">
-          <path d="M8,3A2,2 0 0,0 6,5V9A2,2 0 0,1 4,11H3V13H4A2,2 0 0,1 6,15V19A2,2 0 0,0 8,21H10V19H8V14A2,2 0 0,0 6,12A2,2 0 0,0 8,10V5H10V3M16,3A2,2 0 0,1 18,5V9A2,2 0 0,0 20,11H21V13H20A2,2 0 0,0 18,15V19A2,2 0 0,1 16,21H14V19H16V14A2,2 0 0,1 18,12A2,2 0 0,1 16,10V5H14V3H16Z"/>
-        </svg>
-      )
-    },
-    {
-      title: "Science & Engineering",
-      color: "from-teal-500 to-teal-600",
-      image: "https://images.unsplash.com/photo-1494173853739-c21f58b16055",
-      link: "/courses",
-      icon: (
-        <svg fill="currentColor" viewBox="0 0 24 24" className="w-full h-full">
-          <path d="M12,2A3,3 0 0,1 15,5V11C15,11.11 15,11.22 14.96,11.33L21,17.4V20A2,2 0 0,1 19,22H5A2,2 0 0,1 3,20V17.4L9.04,11.33C9,11.22 9,11.11 9,11V5A3,3 0 0,1 12,2M12,4A1,1 0 0,0 11,5V11H13V5A1,1 0 0,0 12,4Z"/>
-        </svg>
-      )
-    }
-  ];
-
-  return (
-    <section className="py-16 bg-white">
+    <section className="py-20 bg-white">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="text-center mb-12">
-          <p className="text-lg text-gray-600">Build quantitative skills in</p>
-        </div>
-        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6">
-          {categories.map((category, index) => (
-            <CourseCategory key={index} {...category} />
-          ))}
-        </div>
-      </div>
-    </section>
-  );
-};
-
-// Social Proof Section
-export const SocialProofSection = () => {
-  return (
-    <section className="py-20 bg-gray-900 text-white">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-        <h2 className="text-4xl md:text-5xl font-bold mb-8">
-          Join over 10 million learners worldwide
-        </h2>
-        
-        <div className="flex items-center justify-center mb-8">
-          <div className="flex space-x-1">
-            {[...Array(5)].map((_, i) => (
-              <svg key={i} className="w-6 h-6 text-yellow-400 fill-current" viewBox="0 0 24 24">
-                <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
-              </svg>
-            ))}
-          </div>
-          <span className="ml-3 text-gray-300">Over 50,000+ 5-star reviews</span>
+        <div className="text-center mb-16">
+          <h2 className="text-4xl font-bold text-gray-900 mb-4">Your SwiftUI Journey</h2>
+          <p className="text-xl text-gray-600">Master iOS development with our comprehensive SwiftUI course</p>
         </div>
 
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-8 items-center opacity-60">
-          <div className="text-center">
-            <div className="text-2xl font-bold">The New York Times</div>
-          </div>
-          <div className="text-center">
-            <div className="text-2xl font-bold">The Atlantic</div>
-          </div>
-          <div className="text-center">
-            <div className="text-2xl font-bold">Apple</div>
-            <div className="text-sm">Editor's Choice</div>
-          </div>
-          <div className="text-center">
-            <div className="text-2xl font-bold">Google</div>
-            <div className="text-sm">Best of 2020</div>
-          </div>
-        </div>
-      </div>
-    </section>
-  );
-};
-
-// Interactive Features Section
-export const InteractiveFeaturesSection = () => {
-  return (
-    <section className="py-20 bg-gray-50">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
-          <div className="relative">
-            <div className="bg-white p-8 rounded-2xl shadow-xl">
-              <div className="relative w-full h-64">
-                <img 
-                  src="https://images.pexels.com/photos/5475750/pexels-photo-5475750.jpeg" 
-                  alt="Interactive Learning" 
-                  className="w-full h-full object-cover rounded-lg"
-                />
-                <div className="absolute inset-0 bg-blue-500/20 rounded-lg flex items-center justify-center">
-                  <div className="w-16 h-16 bg-white rounded-full flex items-center justify-center shadow-lg">
-                    <svg className="w-8 h-8 text-blue-500" fill="currentColor" viewBox="0 0 24 24">
-                      <path d="M8 5v14l11-7z"/>
-                    </svg>
+        <div className="bg-gradient-to-br from-purple-600 to-blue-600 rounded-2xl p-8 text-white">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
+            <div>
+              <h3 className="text-3xl font-bold mb-4">Learning SwiftUI</h3>
+              <p className="text-purple-100 mb-6">
+                From basic views to advanced animations, learn everything you need to build stunning iOS apps with SwiftUI.
+              </p>
+              
+              <div className="space-y-4">
+                <div className="flex items-center space-x-3">
+                  <div className="w-2 h-2 bg-orange-400 rounded-full"></div>
+                  <span>SwiftUI Views & Layout Systems</span>
+                </div>
+                <div className="flex items-center space-x-3">
+                  <div className="w-2 h-2 bg-green-400 rounded-full"></div>
+                  <span>State Management & Data Flow</span>
+                </div>
+                <div className="flex items-center space-x-3">
+                  <div className="w-2 h-2 bg-blue-400 rounded-full"></div>
+                  <span>Animations & Interactions</span>
+                </div>
+                <div className="flex items-center space-x-3">
+                  <div className="w-2 h-2 bg-pink-400 rounded-full"></div>
+                  <span>Navigation & Lists</span>
+                </div>
+              </div>
+              
+              <Link
+                to="/courses/learning-swiftui"
+                className="inline-block mt-6 bg-white text-purple-600 px-6 py-3 rounded-lg font-semibold hover:bg-gray-100 transition-colors"
+              >
+                Start Course
+              </Link>
+            </div>
+            
+            <div className="relative">
+              <div className="bg-white/10 backdrop-blur-sm rounded-xl p-6">
+                <div className="space-y-4">
+                  <div className="flex items-center space-x-3">
+                    <div className="w-8 h-8 bg-orange-400 rounded-lg flex items-center justify-center">
+                      <span className="text-white font-bold text-sm">1</span>
+                    </div>
+                    <span>Text & Modifiers</span>
+                  </div>
+                  <div className="flex items-center space-x-3">
+                    <div className="w-8 h-8 bg-green-400 rounded-lg flex items-center justify-center">
+                      <span className="text-white font-bold text-sm">2</span>
+                    </div>
+                    <span>Stacks & Layout</span>
+                  </div>
+                  <div className="flex items-center space-x-3">
+                    <div className="w-8 h-8 bg-blue-400 rounded-lg flex items-center justify-center">
+                      <span className="text-white font-bold text-sm">3</span>
+                    </div>
+                    <span>Images & SF Symbols</span>
+                  </div>
+                  <div className="flex items-center space-x-3">
+                    <div className="w-8 h-8 bg-purple-400 rounded-lg flex items-center justify-center">
+                      <span className="text-white font-bold text-sm">4</span>
+                    </div>
+                    <span>Buttons & Interactions</span>
+                  </div>
+                  <div className="text-center mt-4">
+                    <span className="text-purple-200">...and much more!</span>
                   </div>
                 </div>
               </div>
             </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+};
+
+// Daily Progress Section
+export const DailyProgressSection = () => {
+  return (
+    <section className="py-20 bg-gray-900 text-white">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+          <div>
+            <h2 className="text-4xl md:text-5xl font-bold mb-8">
+              Build your iOS<br />
+              development skills
+            </h2>
             
-            {/* Geometric overlay */}
-            <div className="absolute -bottom-4 -right-4 w-32 h-32 opacity-20">
-              <svg viewBox="0 0 100 100" className="w-full h-full">
-                <circle cx="50" cy="50" r="40" fill="none" stroke="#3B82F6" strokeWidth="2"/>
-                <line x1="50" y1="10" x2="50" y2="50" stroke="#EF4444" strokeWidth="2"/>
-                <line x1="10" y1="50" x2="50" y2="50" stroke="#EF4444" strokeWidth="2"/>
-                <text x="65" y="35" className="text-xs fill-gray-600">r</text>
-                <text x="25" y="45" className="text-xs fill-gray-600">y</text>
-                <text x="25" y="85" className="text-xs fill-gray-600">45°</text>
-              </svg>
+            <div className="space-y-6">
+              <div className="flex items-start space-x-4">
+                <div className="w-12 h-12 bg-orange-500 rounded-xl flex items-center justify-center flex-shrink-0">
+                  <span className="text-2xl">🎯</span>
+                </div>
+                <div>
+                  <h3 className="text-xl font-semibold mb-2">Focused Learning Path</h3>
+                  <p className="text-gray-300">Structured curriculum designed specifically for iOS development mastery</p>
+                </div>
+              </div>
+              
+              <div className="flex items-start space-x-4">
+                <div className="w-12 h-12 bg-purple-500 rounded-xl flex items-center justify-center flex-shrink-0">
+                  <span className="text-2xl">⚡</span>
+                </div>
+                <div>
+                  <h3 className="text-xl font-semibold mb-2">Interactive Practice</h3>
+                  <p className="text-gray-300">Hands-on coding exercises with real SwiftUI examples</p>
+                </div>
+              </div>
+              
+              <div className="flex items-start space-x-4">
+                <div className="w-12 h-12 bg-blue-500 rounded-xl flex items-center justify-center flex-shrink-0">
+                  <span className="text-2xl">🚀</span>
+                </div>
+                <div>
+                  <h3 className="text-xl font-semibold mb-2">Build Real Apps</h3>
+                  <p className="text-gray-300">Apply your knowledge by creating actual iOS applications</p>
+                </div>
+              </div>
             </div>
           </div>
 
-          <div className="lg:pl-8">
-            <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6">
-              Concepts<br />
-              that click
-            </h2>
-            <p className="text-xl text-gray-600 mb-8 leading-relaxed">
-              Interactive lessons make even complex ideas easy to grasp. 
-              Instant, custom feedback accelerates your understanding.
-            </p>
-            <Link
-              to="/courses"
-              className="bg-green-500 hover:bg-green-600 text-white px-8 py-4 rounded-lg text-lg font-semibold transition-all duration-300 transform hover:scale-105 inline-block"
-            >
-              Start learning
-            </Link>
+          <div className="bg-white/5 backdrop-blur-sm rounded-2xl p-8">
+            <div className="mb-6">
+              <div className="flex items-center justify-between mb-4">
+                <h3 className="text-2xl font-bold">Your Progress</h3>
+                <span className="text-orange-400 font-semibold">3 day streak 🔥</span>
+              </div>
+              
+              <div className="grid grid-cols-7 gap-2">
+                {['M', 'T', 'W', 'T', 'F', 'S', 'S'].map((day, index) => (
+                  <div key={day} className="text-center">
+                    <div className="text-sm text-gray-400 mb-2">{day}</div>
+                    <div className={`w-8 h-8 rounded-lg flex items-center justify-center ${
+                      index < 3 ? 'bg-orange-500' : 'bg-gray-700'
+                    }`}>
+                      {index < 3 && <span className="text-sm">✓</span>}
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+            
+            <div className="space-y-4">
+              <div>
+                <div className="flex justify-between text-sm mb-2">
+                  <span>SwiftUI Views</span>
+                  <span>Progress: 45%</span>
+                </div>
+                <div className="w-full bg-gray-700 rounded-full h-2">
+                  <div className="bg-gradient-to-r from-purple-500 to-blue-500 h-2 rounded-full" style={{width: '45%'}}></div>
+                </div>
+              </div>
+              
+              <div>
+                <div className="flex justify-between text-sm mb-2">
+                  <span>State Management</span>
+                  <span>Progress: 20%</span>
+                </div>
+                <div className="w-full bg-gray-700 rounded-full h-2">
+                  <div className="bg-gradient-to-r from-purple-500 to-blue-500 h-2 rounded-full" style={{width: '20%'}}></div>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </div>
@@ -323,9 +334,9 @@ export const InteractiveFeaturesSection = () => {
 // Footer Component
 export const Footer = () => {
   const links = {
-    "Courses": ["Math", "Data", "Computer Science", "Programming", "Science"],
-    "Resources": ["Daily Problems", "Lessons", "Community", "Help Center"],
-    "About": ["Our Story", "Careers", "Press", "Privacy", "Terms"]
+    "Learning": ["SwiftUI Course", "Practice Problems", "Code Examples", "iOS Guides"],
+    "Resources": ["Documentation", "Community", "Help Center", "Tutorials"],
+    "About": ["AI-Tutor", "iOS Focus", "Privacy", "Terms"]
   };
 
   return (
@@ -333,9 +344,14 @@ export const Footer = () => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
           <div className="col-span-1">
-            <h3 className="text-2xl font-bold mb-4">Brilliant</h3>
+            <div className="flex items-center space-x-2 mb-4">
+              <div className="w-8 h-8 bg-gradient-to-br from-purple-600 to-blue-500 rounded-lg flex items-center justify-center">
+                <span className="text-white font-bold text-sm">AI</span>
+              </div>
+              <span className="text-2xl font-bold">AI-Tutor</span>
+            </div>
             <p className="text-gray-400 mb-6">
-              Learn by solving problems, one brilliant concept at a time.
+              Your personal AI tutor for mastering iOS development with SwiftUI.
             </p>
             <div className="flex space-x-4">
               <a href="#" className="text-gray-400 hover:text-white transition-colors">
@@ -368,7 +384,7 @@ export const Footer = () => {
         </div>
 
         <div className="border-t border-gray-800 mt-12 pt-8 text-center text-gray-400">
-          <p>&copy; 2024 Brilliant. All rights reserved.</p>
+          <p>&copy; 2024 AI-Tutor. Master iOS development with SwiftUI.</p>
         </div>
       </div>
     </footer>

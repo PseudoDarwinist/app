@@ -387,69 +387,47 @@ export const LessonPage = () => {
       {/* Floating blob animations inspired by storybook.emergent.sh */}
       <div className="fixed inset-0 overflow-hidden pointer-events-none">
         {/* Large flowing gradient blob - pink/purple */}
-        <div className="absolute top-0 left-0 w-[800px] h-[600px] opacity-60 animate-pulse">
-          <div 
-            className="w-full h-full bg-gradient-to-br from-pink-400 via-purple-500 to-indigo-600 rounded-full filter blur-3xl"
-            style={{
-              clipPath: 'polygon(20% 0%, 80% 10%, 100% 50%, 85% 90%, 10% 85%)',
-              animation: 'float 20s ease-in-out infinite, morph 15s ease-in-out infinite'
-            }}
-          ></div>
-        </div>
+        <div 
+          className="absolute top-0 left-0 w-[800px] h-[600px] opacity-60 rounded-full filter blur-3xl"
+          style={{
+            background: 'linear-gradient(45deg, #f472b6, #a855f7, #6366f1)',
+            clipPath: 'polygon(20% 0%, 80% 10%, 100% 50%, 85% 90%, 10% 85%)',
+            animation: 'blob-float 20s ease-in-out infinite'
+          }}
+        ></div>
 
         {/* Medium flowing blob - blue/teal */}
-        <div className="absolute top-1/4 right-0 w-[600px] h-[400px] opacity-50">
-          <div 
-            className="w-full h-full bg-gradient-to-br from-blue-400 via-teal-500 to-green-500 rounded-full filter blur-2xl"
-            style={{
-              clipPath: 'polygon(30% 20%, 70% 0%, 90% 60%, 60% 100%, 0% 80%)',
-              animation: 'float 25s ease-in-out infinite reverse, morph 20s ease-in-out infinite reverse'
-            }}
-          ></div>
-        </div>
+        <div 
+          className="absolute top-1/4 right-0 w-[600px] h-[400px] opacity-50 rounded-full filter blur-2xl"
+          style={{
+            background: 'linear-gradient(45deg, #60a5fa, #14b8a6, #10b981)',
+            clipPath: 'polygon(30% 20%, 70% 0%, 90% 60%, 60% 100%, 0% 80%)',
+            animation: 'blob-float-reverse 25s ease-in-out infinite'
+          }}
+        ></div>
 
         {/* Small accent blob - orange/yellow */}
-        <div className="absolute bottom-0 left-1/3 w-[400px] h-[300px] opacity-40">
-          <div 
-            className="w-full h-full bg-gradient-to-br from-yellow-400 via-orange-500 to-red-500 rounded-full filter blur-xl"
-            style={{
-              clipPath: 'polygon(40% 10%, 90% 30%, 80% 80%, 20% 90%, 10% 40%)',
-              animation: 'float 18s ease-in-out infinite, morph 12s ease-in-out infinite'
-            }}
-          ></div>
-        </div>
+        <div 
+          className="absolute bottom-0 left-1/3 w-[400px] h-[300px] opacity-40 rounded-full filter blur-xl"
+          style={{
+            background: 'linear-gradient(45deg, #fbbf24, #f97316, #ef4444)',
+            clipPath: 'polygon(40% 10%, 90% 30%, 80% 80%, 20% 90%, 10% 40%)',
+            animation: 'blob-float-slow 18s ease-in-out infinite'
+          }}
+        ></div>
 
         {/* Additional flowing elements */}
-        <div className="absolute top-2/3 right-1/4 w-[300px] h-[300px] opacity-30">
-          <div 
-            className="w-full h-full bg-gradient-to-br from-purple-400 via-pink-500 to-rose-500 rounded-full filter blur-2xl"
-            style={{
-              clipPath: 'circle(50% at 50% 50%)',
-              animation: 'float 22s ease-in-out infinite reverse, pulse 8s ease-in-out infinite'
-            }}
-          ></div>
-        </div>
+        <div 
+          className="absolute top-2/3 right-1/4 w-[300px] h-[300px] opacity-30 rounded-full filter blur-2xl"
+          style={{
+            background: 'linear-gradient(45deg, #a855f7, #ec4899, #f43f5e)',
+            animation: 'blob-pulse 22s ease-in-out infinite'
+          }}
+        ></div>
 
         {/* Animated gradient overlay for extra magic */}
         <div className="absolute inset-0 bg-gradient-to-br from-transparent via-purple-100/10 to-transparent opacity-20"></div>
       </div>
-
-      {/* Custom CSS for advanced animations */}
-      <style jsx>{`
-        @keyframes float {
-          0%, 100% { transform: translate(0, 0) rotate(0deg) scale(1); }
-          25% { transform: translate(30px, -30px) rotate(90deg) scale(1.1); }
-          50% { transform: translate(-20px, 20px) rotate(180deg) scale(0.9); }
-          75% { transform: translate(-30px, -10px) rotate(270deg) scale(1.05); }
-        }
-
-        @keyframes morph {
-          0%, 100% { border-radius: 50% 60% 70% 40%; }
-          25% { border-radius: 40% 70% 60% 50%; }
-          50% { border-radius: 60% 40% 50% 70%; }
-          75% { border-radius: 70% 50% 40% 60%; }
-        }
-      `}</style>
 
       <div className="relative max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {/* Navigation */}

@@ -177,3 +177,94 @@ button:active {
 .footer-link:hover::after {
   width: 100%;
 }
+
+/* Lesson content styling */
+.prose {
+  max-width: none;
+}
+
+.prose h2 {
+  font-size: 1.875rem;
+  font-weight: 700;
+  color: #1f2937;
+  margin-bottom: 1rem;
+  margin-top: 2rem;
+}
+
+.prose h3 {
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: #374151;
+  margin-bottom: 0.75rem;
+  margin-top: 1.5rem;
+}
+
+.prose h4 {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: #4b5563;
+  margin-bottom: 0.5rem;
+  margin-top: 1rem;
+}
+
+.prose p {
+  margin-bottom: 1rem;
+  line-height: 1.7;
+  color: #374151;
+}
+
+.prose ul, .prose ol {
+  margin-bottom: 1rem;
+  padding-left: 1.5rem;
+}
+
+.prose li {
+  margin-bottom: 0.5rem;
+  line-height: 1.6;
+  color: #374151;
+}
+
+.prose pre {
+  background-color: #f3f4f6;
+  border-radius: 0.5rem;
+  padding: 1rem;
+  margin: 1rem 0;
+  overflow-x: auto;
+}
+
+.prose code {
+  background-color: #f3f4f6;
+  padding: 0.125rem 0.25rem;
+  border-radius: 0.25rem;
+  font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
+  font-size: 0.875rem;
+}
+
+.prose pre code {
+  background-color: transparent;
+  padding: 0;
+}
+
+.example-box {
+  background-color: #f0f9ff;
+  border-left: 4px solid #0ea5e9;
+  padding: 1rem;
+  margin: 1rem 0;
+  border-radius: 0.5rem;
+}
+
+.example-box h4 {
+  color: #0369a1;
+  margin-bottom: 0.5rem;
+  margin-top: 0;
+}
+
+/* Learning path node animations */
+@keyframes pathPulse {
+  0%, 100% {
+    box-shadow: 0 0 0 0 rgba(147, 51, 234, 0.4);
+  }
+  50% {
+    box-shadow: 0 0 0 10px rgba(147, 51, 234, 0);
+  }
+}

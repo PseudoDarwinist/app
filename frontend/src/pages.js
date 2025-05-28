@@ -337,6 +337,7 @@ export const LessonPage = () => {
   const [showResults, setShowResults] = useState(false);
   const [currentQuestion, setCurrentQuestion] = useState(0);
   const [generatingImage, setGeneratingImage] = useState(false);
+  const [generatingDoodle, setGeneratingDoodle] = useState(false);
   const [aiGeneratedImage, setAiGeneratedImage] = useState(null);
   const [generatingVisualization, setGeneratingVisualization] = useState(false);
   const [aiVisualization, setAiVisualization] = useState(null);

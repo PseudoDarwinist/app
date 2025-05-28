@@ -87,16 +87,21 @@ export const CoursesPage = () => {
 };
 
 // Learning Path Node Component
-const LearningPathNode = ({ lesson, isCompleted, isActive, onClick, index }) => {
+const LearningPathNode = ({ lesson, isCompleted, isActive, onClick, index, isLocked }) => {
   return (
     <div className="flex flex-col items-center mb-8">
       <button
-        onClick={() => onClick(lesson)}
-        className={`relative w-16 h-16 rounded-full flex items-center justify-center transition-all duration-300 transform hover:scale-110 ${
+        onClick={() => !isLocked && onClick(lesson)}
+        disabled={isLocked}
+        className={`relative w-16 h-16 rounded-full flex items-center justify-center transition-all duration-300 transform ${
+          isLocked ? 'cursor-not-allowed' : 'hover:scale-110'
+        } ${
           isActive 
             ? 'bg-purple-600 shadow-xl' 
             : isCompleted 
             ? 'bg-green-500 shadow-lg' 
+            : isLocked
+            ? 'bg-gray-300 shadow-sm'
             : 'bg-purple-400 hover:bg-purple-500 shadow-md'
         }`}
       >
@@ -104,21 +109,30 @@ const LearningPathNode = ({ lesson, isCompleted, isActive, onClick, index }) => 
           <svg className="w-8 h-8 text-white" fill="currentColor" viewBox="0 0 24 24">
             <path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
           </svg>
+        ) : isLocked ? (
+          <svg className="w-6 h-6 text-gray-500" fill="currentColor" viewBox="0 0 24 24">
+            <path d="M12 1a3 3 0 0 0-3 3v2H7a1 1 0 0 0-1 1v10a1 1 0 0 0 1 1h10a1 1 0 0 0 1-1V7a1 1 0 0 0-1-1h-2V4a3 3 0 0 0-3-3zm0 2a1 1 0 0 1 1 1v2h-2V4a1 1 0 0 1 1-1z"/>
+          </svg>
         ) : (
           <span className="text-white font-bold text-lg">{index + 1}</span>
         )}
         
-        {isActive && (
+        {isActive && !isLocked && (
           <div className="absolute -inset-2 border-2 border-purple-300 rounded-full animate-pulse"></div>
         )}
       </button>
       
       <div className="mt-3 text-center max-w-24">
-        <p className="text-sm font-medium text-gray-700 leading-tight">{lesson.title}</p>
+        <p className={`text-sm font-medium leading-tight ${isLocked ? 'text-gray-400' : 'text-gray-700'}`}>
+          {lesson.title}
+        </p>
+        {isLocked && (
+          <p className="text-xs text-gray-400 mt-1">🔒 Complete previous lesson</p>
+        )}
       </div>
       
       {/* Connection line to next node */}
-      <div className="w-px h-8 bg-gray-300 mt-4"></div>
+      <div className={`w-px h-8 mt-4 ${isLocked ? 'bg-gray-200' : 'bg-gray-300'}`}></div>
     </div>
   );
 };

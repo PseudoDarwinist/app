@@ -113,9 +113,12 @@ export const HeroSection = () => {
           Get smarter in 15 minutes a day.
         </p>
         
-        <button className="bg-green-500 hover:bg-green-600 text-white px-8 py-4 rounded-lg text-lg font-semibold transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl">
+        <Link
+          to="/courses"
+          className="bg-green-500 hover:bg-green-600 text-white px-8 py-4 rounded-lg text-lg font-semibold transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl inline-block"
+        >
           Get started
-        </button>
+        </Link>
       </div>
     </section>
   );

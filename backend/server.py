@@ -152,41 +152,90 @@ async def generate_concept_image(request: ImageGenerationRequest):
         if not openai_key or openai_key == "your-openai-api-key-here":
             raise HTTPException(status_code=400, detail="OpenAI API key not configured")
         
-        # Create image generator
-        image_gen = OpenAIImageGeneration(api_key=openai_key)
-        
-        # Enhanced prompt for educational diagrams
-        enhanced_prompt = f"""
-        Create a clean, educational diagram illustration for SwiftUI concept: {request.concept}
-        
-        Style requirements:
-        - Clean, minimalist design with soft colors
-        - Educational diagram style, not photorealistic
-        - Clear visual hierarchy and easy to understand
-        - Suitable for learning materials
-        - Professional but friendly appearance
-        
-        Content: {request.prompt}
-        
-        The image should help students visualize and understand the concept clearly.
-        """
-        
-        # Generate image
-        images = await image_gen.generate_images(
-            prompt=enhanced_prompt,
-            model="gpt-image-1",
-            number_of_images=1
-        )
-        
-        # Convert to base64
-        if images and len(images) > 0:
-            image_base64 = base64.b64encode(images[0]).decode('utf-8')
-            return ImageResponse(image_base64=image_base64, concept=request.concept)
-        else:
-            raise HTTPException(status_code=500, detail="No image was generated")
+        try:
+            # Create image generator
+            image_gen = OpenAIImageGeneration(api_key=openai_key)
+            
+            # Enhanced prompt for educational diagrams
+            enhanced_prompt = f"""
+            Create a clean, educational diagram illustration for SwiftUI concept: {request.concept}
+            
+            Style requirements:
+            - Clean, minimalist design with soft colors
+            - Educational diagram style, not photorealistic
+            - Clear visual hierarchy and easy to understand
+            - Suitable for learning materials
+            - Professional but friendly appearance
+            
+            Content: {request.prompt}
+            
+            The image should help students visualize and understand the concept clearly.
+            """
+            
+            # Generate image
+            images = await image_gen.generate_images(
+                prompt=enhanced_prompt,
+                model="gpt-image-1",
+                number_of_images=1
+            )
+            
+            # Convert to base64
+            if images and len(images) > 0:
+                image_base64 = base64.b64encode(images[0]).decode('utf-8')
+                return ImageResponse(image_base64=image_base64, concept=request.concept)
+            else:
+                raise HTTPException(status_code=500, detail="No image was generated")
+                
+        except Exception as api_error:
+            if "quota" in str(api_error).lower() or "limit" in str(api_error).lower():
+                # Provide a placeholder educational image encoded as base64
+                # This is a simple colored rectangle with text as fallback
+                import io
+                from PIL import Image, ImageDraw, ImageFont
+                import base64
+                
+                # Create a beautiful educational placeholder
+                img = Image.new('RGB', (400, 300), color='#f8fafc')
+                draw = ImageDraw.Draw(img)
+                
+                # Add gradient background
+                for i in range(300):
+                    r = int(248 + (168 - 248) * i / 300)  # From light to purple
+                    g = int(250 + (199 - 250) * i / 300)
+                    b = int(252 + (248 - 252) * i / 300)
+                    draw.rectangle([0, i, 400, i+1], fill=(r, g, b))
+                
+                # Add concept title
+                try:
+                    # Try to use a system font
+                    font_large = ImageFont.truetype("/usr/share/fonts/truetype/liberation/LiberationSans-Bold.ttf", 24)
+                    font_small = ImageFont.truetype("/usr/share/fonts/truetype/liberation/LiberationSans-Regular.ttf", 16)
+                except:
+                    # Fallback to default font
+                    font_large = ImageFont.load_default()
+                    font_small = ImageFont.load_default()
+                
+                # Add text content
+                draw.text((200, 80), f"📱 {request.concept}", fill='#4c1d95', anchor="mm", font=font_large)
+                draw.text((200, 120), "Educational Concept", fill='#6b21a8', anchor="mm", font=font_small)
+                draw.text((200, 180), "✨ AI-Powered Learning", fill='#7c3aed', anchor="mm", font=font_small)
+                draw.text((200, 220), "Quota limit reached - using fallback", fill='#8b5cf6', anchor="mm", font=font_small)
+                
+                # Convert to base64
+                buffered = io.BytesIO()
+                img.save(buffered, format="PNG")
+                img_base64 = base64.b64encode(buffered.getvalue()).decode('utf-8')
+                
+                return ImageResponse(image_base64=img_base64, concept=request.concept)
+            else:
+                raise api_error
             
     except Exception as e:
-        raise HTTPException(status_code=500, detail=f"Error generating image: {str(e)}")
+        if "quota" not in str(e).lower() and "limit" not in str(e).lower():
+            raise HTTPException(status_code=500, detail=f"Error generating image: {str(e)}")
+        else:
+            # Already handled above
+            raise e
 
 @app.post("/api/generate-ui-mockup")
 async def generate_ui_mockup(request: ImageGenerationRequest):

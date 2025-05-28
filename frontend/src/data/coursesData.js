@@ -123,153 +123,400 @@ Text("This is a very long text that will automatically wrap to multiple lines wh
           {
             id: 'stacks-and-layout',
             title: 'Stacks & Layout',
-            description: 'Master VStack, HStack, and ZStack to create beautiful layouts.',
+            description: 'Master VStack, HStack, and ZStack through building a real Instagram-like photo app.',
             completed: false,
             content: {
               theory: `
-                <h2>Stacks & Layout in SwiftUI</h2>
-                <p>Stacks are the fundamental building blocks for creating layouts in SwiftUI. They allow you to arrange views in vertical, horizontal, or layered configurations.</p>
+                <h2>🏗️ Building PhotoShare: A Real Instagram-Style App</h2>
+                <p><strong>Today we're building a complete photo-sharing app called "PhotoShare" to master SwiftUI layout systems.</strong></p>
                 
-                <h3>VStack - Vertical Layout</h3>
-                <p>VStack arranges views vertically from top to bottom:</p>
+                <div class="example-box">
+                  <h4>🎯 What We're Building</h4>
+                  <p>A photo sharing app where users can view a feed of photos with likes, comments, and user profiles - just like Instagram's core functionality.</p>
+                </div>
+                
+                <h3>🏛️ Complete MVVM Architecture Overview</h3>
+                <p><strong>Before we write ANY code, let's visualize our complete app architecture:</strong></p>
+                
+                <div style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); padding: 20px; border-radius: 12px; color: white; margin: 20px 0;">
+                  <h4 style="color: white; margin-bottom: 15px;">📐 PhotoShare MVVM Architecture</h4>
+                  
+                  <div style="background: rgba(255,255,255,0.1); padding: 15px; border-radius: 8px; margin: 10px 0;">
+                    <strong>🗂️ MODEL LAYER (Data + Logic)</strong><br/>
+                    📄 <strong>PhotoPost.swift</strong> - Represents a photo with user, image, likes, comments<br/>
+                    📄 <strong>User.swift</strong> - User profile with name, avatar, follower count<br/>
+                    📄 <strong>Comment.swift</strong> - Individual comment with text and timestamp
+                  </div>
+                  
+                  <div style="background: rgba(255,255,255,0.1); padding: 15px; border-radius: 8px; margin: 10px 0;">
+                    <strong>🧠 VIEWMODEL LAYER (Business Logic + State)</strong><br/>
+                    📄 <strong>PhotoFeedViewModel.swift</strong> - Manages collection of posts, loading states<br/>
+                    📄 <strong>UserProfileViewModel.swift</strong> - Handles user data and profile updates
+                  </div>
+                  
+                  <div style="background: rgba(255,255,255,0.1); padding: 15px; border-radius: 8px; margin: 10px 0;">
+                    <strong>📱 VIEW LAYER (User Interface)</strong><br/>
+                    📄 <strong>PhotoFeedView.swift</strong> - Main feed scroll view<br/>
+                    📄 <strong>PhotoPostCardView.swift</strong> - Individual post card component<br/>
+                    📄 <strong>UserProfileHeaderView.swift</strong> - Profile section in each post
+                  </div>
+                </div>
+                
+                <h3>🧠 Raw Developer Thinking Process</h3>
+                <p><strong>Let me think through this like a real developer would...</strong></p>
+                
+                <div style="background: #f8f9fa; padding: 20px; border-left: 4px solid #007acc; margin: 20px 0; font-style: italic;">
+                  <p><strong>🤔 "Okay, so I need to build a photo feed. What does each post need?"</strong></p>
+                  <p>• A user profile section at the top (avatar + username)<br/>
+                  • The main photo image<br/>
+                  • Action buttons (like, comment, share)<br/>
+                  • Like count and caption text<br/>
+                  • Maybe some recent comments...</p>
+                  
+                  <p><strong>"How should I arrange these elements?"</strong></p>
+                  <p>• Definitely need a VStack for the main vertical flow<br/>
+                  • The profile header needs an HStack (avatar next to username)<br/>
+                  • Action buttons need an HStack (side by side)<br/>
+                  • For the photo and action buttons, I might need a ZStack for floating elements...</p>
+                  
+                  <p><strong>"Let me sketch this out first..."</strong></p>
+                </div>
+                
+                <h3>📐 Visual UI Planning (Before Any Code!)</h3>
+                <p><strong>Here's how I would sketch out a PhotoPost card:</strong></p>
+                
+                <div style="background: white; border: 2px solid #e1e5e9; border-radius: 12px; padding: 20px; margin: 20px 0;">
+                  <div style="text-align: center; color: #666; margin-bottom: 15px;">
+                    <strong>📱 PhotoPost Card Layout Sketch</strong>
+                  </div>
+                  
+                  <div style="border: 1px solid #ddd; border-radius: 8px; padding: 15px; background: #fafafa;">
+                    <div style="display: flex; align-items: center; margin-bottom: 10px; padding: 8px; background: white; border-radius: 6px;">
+                      <div style="width: 40px; height: 40px; border-radius: 50%; background: #007acc; margin-right: 10px; display: flex; align-items: center; justify-content: center; color: white; font-size: 12px;">👤</div>
+                      <div>
+                        <div style="font-weight: bold; font-size: 14px;">username</div>
+                        <div style="font-size: 12px; color: #666;">2 hours ago</div>
+                      </div>
+                    </div>
+                    
+                    <div style="width: 100%; height: 200px; background: linear-gradient(45deg, #ff6b6b, #4ecdc4); border-radius: 8px; display: flex; align-items: center; justify-content: center; color: white; margin-bottom: 10px;">
+                      📸 PHOTO IMAGE
+                    </div>
+                    
+                    <div style="display: flex; justify-content: space-between; padding: 8px; background: white; border-radius: 6px; margin-bottom: 8px;">
+                      <div style="display: flex; gap: 15px;">
+                        <span>❤️ Like</span>
+                        <span>💬 Comment</span>
+                        <span>📤 Share</span>
+                      </div>
+                      <span>🔖 Save</span>
+                    </div>
+                    
+                    <div style="padding: 8px; background: white; border-radius: 6px;">
+                      <div style="font-weight: bold; margin-bottom: 5px;">1,234 likes</div>
+                      <div><strong>username</strong> This is an amazing sunset from my trip! #photography #travel</div>
+                    </div>
+                  </div>
+                </div>
+                
+                <h3>🏗️ Breaking Down the Layout Architecture</h3>
+                <p><strong>Now let's architect this step-by-step, identifying each stack type and why we need it:</strong></p>
+                
+                <div class="example-box">
+                  <h4>🎯 Layout Strategy Analysis</h4>
+                  <p><strong>Main Structure:</strong> VStack (vertical flow from top to bottom)</p>
+                  <p><strong>Profile Header:</strong> HStack (avatar beside username)</p>
+                  <p><strong>Action Buttons:</strong> HStack (buttons side by side)</p>
+                  <p><strong>Photo + Floating Elements:</strong> ZStack (overlay effects)</p>
+                </div>
+                
+                <h3>🔨 Component 1: The Profile Header (HStack Mastery)</h3>
+                <p><strong>Let's build the user profile header first. Here's my thinking process:</strong></p>
+                
+                <div style="background: #f0f8ff; padding: 15px; border-radius: 8px; margin: 15px 0;">
+                  <p><strong>🤔 Developer Thinking:</strong> "I need the avatar image on the left, then username and timestamp on the right. That's clearly an HStack with the avatar, then a VStack for the text elements."</p>
+                </div>
                 
                 <pre><code>
-VStack {
-    Text("First Item")
-    Text("Second Item")
-    Text("Third Item")
-}
-                </code></pre>
-                
-                <h3>VStack with Spacing and Alignment</h3>
-                <pre><code>
-VStack(alignment: .leading, spacing: 20) {
-    Text("Title")
-        .font(.headline)
-    Text("Subtitle")
-        .font(.subheadline)
-    Text("Description")
-        .font(.body)
-}
-                </code></pre>
-                
-                <h3>HStack - Horizontal Layout</h3>
-                <p>HStack arranges views horizontally from left to right:</p>
-                
-                <pre><code>
-HStack {
-    Image(systemName: "star.fill")
-        .foregroundColor(.yellow)
-    Text("5.0")
-    Text("Reviews")
-        .foregroundColor(.gray)
-}
-                </code></pre>
-                
-                <h3>ZStack - Layered Layout</h3>
-                <p>ZStack layers views on top of each other:</p>
-                
-                <pre><code>
-ZStack {
-    Rectangle()
-        .fill(Color.blue)
-        .frame(width: 200, height: 200)
+struct UserProfileHeader: View {
+    let user: User
+    let timestamp: String
     
-    Text("Overlay Text")
-        .foregroundColor(.white)
-        .font(.title)
-}
-                </code></pre>
+    var body: some View {
+        HStack(alignment: .center, spacing: 12) {
+            // Profile Avatar (Left)
+            AsyncImage(url: URL(string: user.avatarURL)) { image in
+                image
+                    .resizable()
+                    .aspectRatio(contentMode: .fill)
+            } placeholder: {
+                Image(systemName: "person.circle.fill")
+                    .foregroundColor(.gray)
+            }
+            .frame(width: 40, height: 40)
+            .clipShape(Circle())
+            
+            // Username and Time (Right)
+            VStack(alignment: .leading, spacing: 2) {
+                Text(user.username)
+                    .font(.system(size: 14, weight: .semibold))
+                    .foregroundColor(.primary)
                 
-                <h3>Combining Stacks</h3>
-                <p>Create complex layouts by nesting stacks:</p>
-                
-                <pre><code>
-VStack {
-    HStack {
-        Image(systemName: "person.circle")
-        VStack(alignment: .leading) {
-            Text("John Doe")
-                .font(.headline)
-            Text("iOS Developer")
-                .font(.caption)
-                .foregroundColor(.gray)
+                Text(timestamp)
+                    .font(.system(size: 12))
+                    .foregroundColor(.secondary)
+            }
+            
+            Spacer() // Pushes everything to the left
         }
-        Spacer()
+        .padding(.horizontal, 16)
+        .padding(.vertical, 8)
     }
-    .padding()
-    
-    Divider()
-    
-    HStack {
-        Text("Status: ")
-        Text("Online")
-            .foregroundColor(.green)
-        Spacer()
-    }
-    .padding()
 }
                 </code></pre>
                 
                 <div class="example-box">
-                  <h4>Layout Best Practices</h4>
-                  <ul>
-                    <li>Use <code>Spacer()</code> to push content to edges</li>
-                    <li>Add <code>.padding()</code> for breathing room</li>
-                    <li>Specify alignment for consistent positioning</li>
-                    <li>Use <code>Divider()</code> to separate sections</li>
-                  </ul>
+                  <h4>🧠 Why These Design Decisions?</h4>
+                  <p><strong>HStack alignment: .center</strong> - Vertically centers avatar with text block</p>
+                  <p><strong>VStack alignment: .leading</strong> - Left-aligns username and timestamp</p>
+                  <p><strong>Spacer()</strong> - Pushes content to left edge (Instagram-style)</p>
+                  <p><strong>AsyncImage</strong> - Handles network image loading with placeholder</p>
                 </div>
                 
-                <h3>Frame and Sizing</h3>
+                <h3>🔨 Component 2: Action Buttons Bar (HStack + Spacer Strategy)</h3>
+                <p><strong>Now the action buttons row. Let me think this through...</strong></p>
+                
+                <div style="background: #f0f8ff; padding: 15px; border-radius: 8px; margin: 15px 0;">
+                  <p><strong>🤔 Developer Thinking:</strong> "Instagram has like/comment/share on the left, and save bookmark on the right. I need an HStack with the left buttons grouped, then a Spacer(), then the save button."</p>
+                </div>
+                
                 <pre><code>
-VStack {
-    Rectangle()
-        .fill(Color.red)
-        .frame(width: 100, height: 100)
+struct ActionButtonsBar: View {
+    @State private var isLiked = false
+    let likeCount: Int
     
-    Rectangle()
-        .fill(Color.blue)
-        .frame(maxWidth: .infinity, maxHeight: 50)
+    var body: some View {
+        HStack(spacing: 16) {
+            // Left side buttons
+            HStack(spacing: 16) {
+                Button(action: { isLiked.toggle() }) {
+                    Image(systemName: isLiked ? "heart.fill" : "heart")
+                        .foregroundColor(isLiked ? .red : .primary)
+                        .font(.system(size: 22))
+                }
+                
+                Button(action: { /* Handle comment */ }) {
+                    Image(systemName: "bubble.right")
+                        .foregroundColor(.primary)
+                        .font(.system(size: 22))
+                }
+                
+                Button(action: { /* Handle share */ }) {
+                    Image(systemName: "paperplane")
+                        .foregroundColor(.primary)
+                        .font(.system(size: 22))
+                }
+            }
+            
+            Spacer() // Creates space between left and right buttons
+            
+            // Right side save button
+            Button(action: { /* Handle save */ }) {
+                Image(systemName: "bookmark")
+                    .foregroundColor(.primary)
+                    .font(.system(size: 22))
+            }
+        }
+        .padding(.horizontal, 16)
+        .padding(.vertical, 8)
+    }
 }
                 </code></pre>
+                
+                <h3>🔨 Component 3: Complete Photo Post Card (VStack Architecture)</h3>
+                <p><strong>Now let's combine everything into the main card structure:</strong></p>
+                
+                <div style="background: #f0f8ff; padding: 15px; border-radius: 8px; margin: 15px 0;">
+                  <p><strong>🤔 Developer Thinking:</strong> "The main card flows vertically: header at top, then photo, then actions, then caption. That's a clear VStack structure. The photo might need special treatment..."</p>
+                </div>
+                
+                <pre><code>
+struct PhotoPostCard: View {
+    let post: PhotoPost
+    
+    var body: some View {
+        VStack(alignment: .leading, spacing: 0) {
+            // 1. Profile Header
+            UserProfileHeader(
+                user: post.user, 
+                timestamp: post.timeAgo
+            )
+            
+            // 2. Photo Image with ZStack for overlays
+            ZStack(alignment: .topTrailing) {
+                AsyncImage(url: URL(string: post.imageURL)) { image in
+                    image
+                        .resizable()
+                        .aspectRatio(contentMode: .fill)
+                } placeholder: {
+                    Rectangle()
+                        .fill(Color.gray.opacity(0.3))
+                        .overlay(
+                            ProgressView()
+                        )
+                }
+                .frame(maxHeight: 400)
+                .clipped()
+                
+                // Optional: Floating more options button
+                Button(action: { /* Show options */ }) {
+                    Image(systemName: "ellipsis")
+                        .foregroundColor(.white)
+                        .padding(8)
+                        .background(Color.black.opacity(0.5))
+                        .clipShape(Circle())
+                }
+                .padding(.trailing, 12)
+                .padding(.top, 12)
+            }
+            
+            // 3. Action Buttons
+            ActionButtonsBar(likeCount: post.likesCount)
+            
+            // 4. Like Count and Caption
+            VStack(alignment: .leading, spacing: 4) {
+                if post.likesCount > 0 {
+                    Text("\\(post.likesCount) likes")
+                        .font(.system(size: 14, weight: .semibold))
+                }
+                
+                HStack(alignment: .top, spacing: 4) {
+                    Text(post.user.username)
+                        .font(.system(size: 14, weight: .semibold))
+                    Text(post.caption)
+                        .font(.system(size: 14))
+                        .multilineTextAlignment(.leading)
+                }
+                
+                if post.commentsCount > 0 {
+                    Text("View all \\(post.commentsCount) comments")
+                        .font(.system(size: 14))
+                        .foregroundColor(.secondary)
+                }
+            }
+            .padding(.horizontal, 16)
+            .padding(.bottom, 16)
+        }
+        .background(Color(.systemBackground))
+        .cornerRadius(0) // Instagram style - no rounded corners
+    }
+}
+                </code></pre>
+                
+                <h3>💡 Memory Model & Performance Insights</h3>
+                <div style="background: #fff3cd; border: 1px solid #ffeaa7; border-radius: 8px; padding: 15px; margin: 15px 0;">
+                  <h4>🧠 Memory Management in Our Layout</h4>
+                  <p><strong>VStack/HStack/ZStack are structs (value types)</strong> - They live on the stack and are copied when passed around, making them very efficient.</p>
+                  
+                  <p><strong>AsyncImage uses internal caching</strong> - Downloaded images are automatically cached in memory to prevent re-downloading.</p>
+                  
+                  <p><strong>@State for isLiked</strong> - Stored in the View's memory, triggers UI re-render when changed.</p>
+                </div>
+                
+                <h3>🎯 Why These Stack Choices?</h3>
+                <div class="example-box">
+                  <h4>🏗️ Architectural Decisions Explained</h4>
+                  <p><strong>VStack for main card:</strong> Natural top-to-bottom reading flow</p>
+                  <p><strong>HStack for profile header:</strong> Avatar beside text (left-to-right)</p>
+                  <p><strong>ZStack for photo:</strong> Allows floating buttons over image</p>
+                  <p><strong>HStack for actions:</strong> Buttons in a horizontal row</p>
+                  <p><strong>VStack for caption area:</strong> Multiple lines of text vertically</p>
+                </div>
+                
+                <h3>🚀 Building the Complete Feed View</h3>
+                <p><strong>Finally, let's create the scrolling feed that contains all our photo cards:</strong></p>
+                
+                <pre><code>
+struct PhotoFeedView: View {
+    @StateObject private var viewModel = PhotoFeedViewModel()
+    
+    var body: some View {
+        NavigationView {
+            ScrollView(.vertical, showsIndicators: false) {
+                LazyVStack(spacing: 0) {
+                    ForEach(viewModel.posts) { post in
+                        PhotoPostCard(post: post)
+                        
+                        Divider()
+                            .padding(.vertical, 8)
+                    }
+                }
+            }
+            .navigationTitle("PhotoShare")
+            .refreshable {
+                await viewModel.loadPosts()
+            }
+        }
+    }
+}
+                </code></pre>
+                
+                <div class="example-box">
+                  <h4>🎯 Pro Tips for Production Apps</h4>
+                  <p><strong>LazyVStack instead of VStack:</strong> Only renders visible posts (crucial for performance)</p>
+                  <p><strong>ScrollView with .refreshable:</strong> Pull-to-refresh functionality</p>
+                  <p><strong>showsIndicators: false:</strong> Hides scroll bar for cleaner look</p>
+                  <p><strong>ForEach with Identifiable:</strong> Efficient list updates and animations</p>
+                </div>
               `,
               practice: [
                 {
                   id: 1,
-                  question: "Which stack would you use to create a horizontal row of buttons?",
+                  question: "In our PhotoShare app, why did we use HStack for the profile header instead of VStack?",
                   options: [
-                    "VStack",
-                    "HStack",
-                    "ZStack",
-                    "GridStack"
+                    "HStack is faster than VStack",
+                    "We need the avatar and username side-by-side horizontally",
+                    "HStack handles images better",
+                    "Apple recommends always using HStack first"
                   ],
                   correct: 1,
-                  explanation: "HStack arranges views horizontally, making it perfect for a row of buttons side by side."
+                  explanation: "HStack arranges views horizontally (left to right), which is perfect for placing an avatar image next to the username text, just like Instagram's design pattern."
                 },
                 {
                   id: 2,
-                  question: "What does Spacer() do in a stack?",
+                  question: "What's the primary reason we used ZStack for the photo section?",
                   options: [
-                    "Adds fixed spacing between views",
-                    "Pushes views to opposite ends",
-                    "Creates a visible divider line",
-                    "Centers all content"
+                    "ZStack loads images faster",
+                    "To layer the options button on top of the photo image",
+                    "ZStack prevents memory leaks",
+                    "Apple requires ZStack for images"
                   ],
                   correct: 1,
-                  explanation: "Spacer() expands to fill available space, effectively pushing views to opposite ends of the stack."
+                  explanation: "ZStack layers views on top of each other (z-axis), allowing us to overlay the floating options button on top of the photo image, creating the layered effect common in social media apps."
                 },
                 {
                   id: 3,
-                  question: "How do you layer a text overlay on top of an image?",
+                  question: "In our ActionButtonsBar, what does Spacer() accomplish between the left and right button groups?",
                   options: [
-                    "Use VStack with the image first",
-                    "Use HStack with alignment",
-                    "Use ZStack with image as background",
-                    "Use a frame modifier"
+                    "It adds a fixed 20px gap",
+                    "It centers all the buttons",
+                    "It pushes the left buttons to the left edge and right button to the right edge",
+                    "It makes the buttons bigger"
                   ],
                   correct: 2,
-                  explanation: "ZStack layers views on top of each other, so you'd put the image first (background) and text second (foreground)."
+                  explanation: "Spacer() expands to fill all available space in the HStack, effectively pushing the like/comment/share buttons to the left side and the save button to the right side, recreating Instagram's layout pattern."
+                },
+                {
+                  id: 4,
+                  question: "Why did we choose LazyVStack instead of regular VStack for the main feed?",
+                  options: [
+                    "LazyVStack looks better visually",
+                    "LazyVStack only renders visible posts, improving performance with large feeds",
+                    "LazyVStack is required for ScrollView",
+                    "LazyVStack handles images automatically"
+                  ],
+                  correct: 1,
+                  explanation: "LazyVStack only creates and renders the views that are currently visible on screen. For a social media feed with potentially thousands of posts, this prevents memory issues and improves scrolling performance dramatically."
                 }
               ]
             }

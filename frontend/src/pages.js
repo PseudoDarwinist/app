@@ -143,6 +143,25 @@ export const CoursePage = () => {
   const navigate = useNavigate();
   const course = getCourse(courseId);
   const [activeChapter, setActiveChapter] = useState(0);
+  
+  // Load lesson completion progress from localStorage
+  const [lessonProgress, setLessonProgress] = useState(() => {
+    const saved = localStorage.getItem(`course_${courseId}_progress`);
+    return saved ? JSON.parse(saved) : {};
+  });
+
+  // Save progress to localStorage whenever it changes
+  const saveProgress = (progress) => {
+    setLessonProgress(progress);
+    localStorage.setItem(`course_${courseId}_progress`, JSON.stringify(progress));
+  };
+
+  // Check if a lesson is unlocked (first lesson is always unlocked)
+  const isLessonUnlocked = (lessonIndex) => {
+    if (lessonIndex === 0) return true;
+    const previousLessonId = currentChapter.lessons[lessonIndex - 1].id;
+    return lessonProgress[previousLessonId] === true;
+  };
 
   if (!course) {
     return (

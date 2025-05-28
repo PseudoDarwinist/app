@@ -132,7 +132,7 @@ export const CoursePage = () => {
 
   if (!course) {
     return (
-      <div className="min-h-screen flex items-center justify-center">
+      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-purple-50 via-blue-50 to-indigo-100">
         <div className="text-center">
           <h1 className="text-2xl font-bold text-gray-900 mb-4">Course not found</h1>
           <Link to="/courses" className="text-blue-600 hover:underline">
@@ -150,60 +150,85 @@ export const CoursePage = () => {
   const currentChapter = course.chapters[activeChapter];
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-gradient-to-br from-purple-50 via-blue-50 to-indigo-100">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <div className="mb-6">
-          <Link to="/courses" className="text-blue-600 hover:underline mb-4 inline-block">
-            ← Back to courses
+          <Link to="/courses" className="text-purple-600 hover:text-purple-800 font-medium mb-4 inline-flex items-center">
+            <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+            </svg>
+            Back to AI-Tutor
           </Link>
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
           {/* Course Info Card */}
           <div className="lg:col-span-1">
-            <div className="bg-white rounded-xl shadow-lg p-6 sticky top-24">
-              <div className="relative h-32 mb-4 rounded-lg overflow-hidden">
+            <div className="bg-white rounded-2xl shadow-xl p-6 sticky top-24 border border-purple-100">
+              <div className="relative h-40 mb-6 rounded-xl overflow-hidden">
                 <img 
                   src={course.image} 
                   alt={course.title}
                   className="w-full h-full object-cover"
                 />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
+                <div className="absolute bottom-4 left-4 right-4">
+                  <span className="bg-gradient-to-r from-purple-500 to-blue-500 text-white px-3 py-1 rounded-full text-sm font-semibold">
+                    {course.category}
+                  </span>
+                </div>
               </div>
               
-              <h1 className="text-2xl font-bold text-gray-900 mb-3">{course.title}</h1>
-              <p className="text-gray-600 mb-4">{course.description}</p>
+              <h1 className="text-2xl font-bold bg-gradient-to-r from-purple-600 to-blue-600 bg-clip-text text-transparent mb-3">
+                {course.title}
+              </h1>
+              <p className="text-gray-600 mb-6">{course.description}</p>
               
-              <div className="space-y-3">
-                <div className="flex items-center justify-between">
-                  <span className="text-gray-600">Lessons</span>
-                  <span className="font-semibold">{course.lessons}</span>
+              <div className="space-y-4 mb-6">
+                <div className="flex items-center justify-between p-3 bg-purple-50 rounded-lg">
+                  <span className="text-gray-700 flex items-center">
+                    <span className="text-purple-500 mr-2">📚</span>
+                    Lessons
+                  </span>
+                  <span className="font-semibold text-purple-600">{course.lessons}</span>
                 </div>
-                <div className="flex items-center justify-between">
-                  <span className="text-gray-600">Practice Problems</span>
-                  <span className="font-semibold">{course.practice}</span>
+                <div className="flex items-center justify-between p-3 bg-blue-50 rounded-lg">
+                  <span className="text-gray-700 flex items-center">
+                    <span className="text-blue-500 mr-2">⚡</span>
+                    Practice Problems
+                  </span>
+                  <span className="font-semibold text-blue-600">{course.practice}</span>
                 </div>
-                <div className="flex items-center justify-between">
-                  <span className="text-gray-600">Level</span>
-                  <span className="font-semibold">Level {course.level}</span>
+                <div className="flex items-center justify-between p-3 bg-green-50 rounded-lg">
+                  <span className="text-gray-700 flex items-center">
+                    <span className="text-green-500 mr-2">🎯</span>
+                    Difficulty
+                  </span>
+                  <span className="font-semibold text-green-600">Level {course.level}</span>
                 </div>
               </div>
 
               {/* Chapter Navigation */}
-              <div className="mt-6">
-                <h3 className="font-semibold text-gray-900 mb-3">Chapters</h3>
+              <div>
+                <h3 className="font-semibold text-gray-900 mb-4 flex items-center">
+                  <span className="mr-2">📖</span>
+                  Course Chapters
+                </h3>
                 <div className="space-y-2">
                   {course.chapters.map((chapter, index) => (
                     <button
                       key={chapter.id}
                       onClick={() => setActiveChapter(index)}
-                      className={`w-full text-left p-3 rounded-lg transition-colors ${
+                      className={`w-full text-left p-4 rounded-xl transition-all duration-300 ${
                         index === activeChapter 
-                          ? 'bg-purple-100 text-purple-700 border-l-4 border-purple-500' 
-                          : 'hover:bg-gray-100'
+                          ? 'bg-gradient-to-r from-purple-500 to-blue-500 text-white shadow-lg transform scale-105' 
+                          : 'bg-gray-50 hover:bg-gray-100 text-gray-700 hover:shadow-md'
                       }`}
                     >
                       <div className="font-medium">{chapter.title}</div>
-                      <div className="text-sm text-gray-500">{chapter.lessons.length} lessons</div>
+                      <div className={`text-sm ${index === activeChapter ? 'text-purple-100' : 'text-gray-500'}`}>
+                        {chapter.lessons.length} lessons
+                      </div>
                     </button>
                   ))}
                 </div>
@@ -213,10 +238,15 @@ export const CoursePage = () => {
 
           {/* Learning Path */}
           <div className="lg:col-span-2">
-            <div className="bg-white rounded-xl shadow-lg p-8">
-              <div className="mb-6">
-                <h2 className="text-2xl font-bold text-gray-900 mb-2">{currentChapter.title}</h2>
-                <p className="text-gray-600">Level {course.level}</p>
+            <div className="bg-white rounded-2xl shadow-xl p-8 border border-purple-100">
+              <div className="mb-8">
+                <h2 className="text-3xl font-bold bg-gradient-to-r from-purple-600 to-blue-600 bg-clip-text text-transparent mb-3">
+                  {currentChapter.title}
+                </h2>
+                <p className="text-gray-600 flex items-center">
+                  <span className="mr-2">🚀</span>
+                  Level {course.level} • Interactive SwiftUI Lessons
+                </p>
               </div>
 
               <div className="flex flex-col items-center py-8">
@@ -232,16 +262,19 @@ export const CoursePage = () => {
                 ))}
                 
                 {/* Continue Button */}
-                <div className="mt-8 bg-gray-100 rounded-xl p-6 text-center max-w-md">
-                  <h3 className="text-lg font-semibold text-gray-900 mb-2">
+                <div className="mt-8 bg-gradient-to-br from-purple-50 to-blue-50 rounded-2xl p-8 text-center max-w-md border border-purple-100">
+                  <div className="mb-4">
+                    <span className="text-4xl">🎯</span>
+                  </div>
+                  <h3 className="text-xl font-bold text-gray-900 mb-3">
                     {currentChapter.lessons[0].title}
                   </h3>
-                  <p className="text-gray-600 mb-4">{currentChapter.lessons[0].description}</p>
+                  <p className="text-gray-600 mb-6">{currentChapter.lessons[0].description}</p>
                   <button
                     onClick={() => handleLessonClick(currentChapter.lessons[0])}
-                    className="bg-purple-600 hover:bg-purple-700 text-white px-8 py-3 rounded-lg font-semibold transition-colors"
+                    className="bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 text-white px-8 py-4 rounded-xl font-semibold transition-all duration-300 transform hover:scale-105 shadow-lg"
                   >
-                    Continue
+                    Start Learning →
                   </button>
                 </div>
               </div>

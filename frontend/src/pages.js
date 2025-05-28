@@ -340,6 +340,33 @@ export const LessonPage = () => {
   const [aiGeneratedImage, setAiGeneratedImage] = useState(null);
   const [generatingVisualization, setGeneratingVisualization] = useState(false);
   const [aiVisualization, setAiVisualization] = useState(null);
+  
+  // Load lesson completion progress from localStorage
+  const [lessonProgress, setLessonProgress] = useState(() => {
+    const saved = localStorage.getItem(`course_${courseId}_progress`);
+    return saved ? JSON.parse(saved) : {};
+  });
+
+  // Save progress to localStorage whenever it changes
+  const saveProgress = (progress) => {
+    setLessonProgress(progress);
+    localStorage.setItem(`course_${courseId}_progress`, JSON.stringify(progress));
+  };
+
+  // Check if current lesson is completed
+  const isLessonCompleted = lessonProgress[lessonId] === true;
+
+  // Handle lesson completion
+  const handleCompleteLesson = () => {
+    const newProgress = { ...lessonProgress, [lessonId]: true };
+    saveProgress(newProgress);
+    
+    // Show success notification
+    alert('🎉 Lesson completed! The next lesson is now unlocked.');
+    
+    // Navigate back to course
+    navigate(`/courses/${courseId}`);
+  };
 
   if (!course || !lesson) {
     return (

@@ -19,6 +19,18 @@ export const coursesData = {
             description: 'Learn to create and style text in SwiftUI with powerful modifiers.',
             completed: false,
             content: {
+              visualization: {
+                analogy: "Think of Text modifiers like applying makeup layers 💄 - each modifier adds a new layer of style without changing the base text",
+                explanation: "Just like makeup, modifiers are applied in sequence and each one builds upon the previous effect. You start with bare text (like a clean face) and add layers: font style (foundation), color (blush), background (highlighter), and padding (contouring). The order matters - applying foundation after lipstick would be messy!",
+                image: "https://images.unsplash.com/photo-1607799279861-4dd421887fb3",
+                visualTips: [
+                  "🎨 Modifiers chain like beauty filters - each one transforms the previous result",
+                  "📏 Font styles are like clothing sizes - they scale appropriately for different contexts", 
+                  "🌈 Colors flow like paint on canvas - foreground colors the text, background colors the container",
+                  "📦 Padding is like adding cushioning around a fragile package",
+                  "✨ Remember: read modifiers from inside-out, like peeling an onion!"
+                ]
+              },
               theory: `
                 <h2>Text & Modifiers in SwiftUI</h2>
                 <p>Text is the foundation of any user interface. In SwiftUI, Text views are incredibly powerful and customizable through modifiers.</p>

@@ -122,9 +122,9 @@ export const HeroSection = () => {
 };
 
 // Course Category Component
-export const CourseCategory = ({ title, icon, color, image }) => {
+export const CourseCategory = ({ title, icon, color, image, link }) => {
   return (
-    <div className="group cursor-pointer">
+    <Link to={link} className="group cursor-pointer">
       <div className={`relative overflow-hidden rounded-xl bg-gradient-to-br ${color} p-6 h-48 transition-all duration-300 group-hover:scale-105 group-hover:shadow-xl`}>
         <div className="absolute inset-0 opacity-20">
           <img src={image} alt={title} className="w-full h-full object-cover" />
@@ -137,7 +137,7 @@ export const CourseCategory = ({ title, icon, color, image }) => {
         </div>
         <div className="absolute bottom-0 right-0 w-16 h-16 bg-white/10 rounded-tl-full"></div>
       </div>
-    </div>
+    </Link>
   );
 };
 

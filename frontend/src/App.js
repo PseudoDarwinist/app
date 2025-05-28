@@ -4,9 +4,8 @@ import './App.css';
 import { 
   Header, 
   HeroSection, 
-  CourseCategoriesSection, 
-  SocialProofSection, 
-  InteractiveFeaturesSection, 
+  CourseFocusSection, 
+  DailyProgressSection, 
   Footer 
 } from './components';
 import { CoursesPage, CoursePage, LessonPage } from './pages';
@@ -16,9 +15,8 @@ const HomePage = () => {
   return (
     <>
       <HeroSection />
-      <CourseCategoriesSection />
-      <SocialProofSection />
-      <InteractiveFeaturesSection />
+      <CourseFocusSection />
+      <DailyProgressSection />
     </>
   );
 };

@@ -2,62 +2,84 @@ import React, { useState } from 'react';
 import { Link, useParams, useNavigate } from 'react-router-dom';
 import { getAllCourses, getCourse, getLesson } from './data/coursesData';
 
-// Courses Page - Lists all available courses
+// Courses Page - Shows only the SwiftUI course
 export const CoursesPage = () => {
   const courses = getAllCourses();
 
   return (
-    <div className="min-h-screen bg-gray-50 py-8">
+    <div className="min-h-screen bg-gradient-to-br from-purple-50 via-blue-50 to-indigo-100 py-8">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="mb-8">
-          <h1 className="text-4xl font-bold text-gray-900 mb-4">All Courses</h1>
-          <p className="text-xl text-gray-600">Choose a course to begin your learning journey</p>
+        <div className="mb-8 text-center">
+          <h1 className="text-4xl font-bold bg-gradient-to-r from-purple-600 to-blue-600 bg-clip-text text-transparent mb-4">
+            Master iOS Development
+          </h1>
+          <p className="text-xl text-gray-600">Your personalized SwiftUI learning journey starts here</p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        <div className="max-w-2xl mx-auto">
           {courses.map((course) => (
             <Link key={course.id} to={`/courses/${course.id}`}>
-              <div className="bg-white rounded-xl shadow-lg hover:shadow-xl transition-shadow duration-300 overflow-hidden group">
-                <div className="relative h-48 overflow-hidden">
+              <div className="bg-white rounded-2xl shadow-xl hover:shadow-2xl transition-all duration-300 overflow-hidden group transform hover:scale-105 mb-8">
+                <div className="relative h-64 overflow-hidden">
                   <img 
                     src={course.image} 
                     alt={course.title}
-                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                    className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
                   />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent"></div>
                   <div className="absolute top-4 left-4">
-                    <span className="bg-blue-500 text-white px-3 py-1 rounded-full text-sm font-semibold">
-                      Level {course.level}
+                    <span className="bg-gradient-to-r from-purple-500 to-blue-500 text-white px-4 py-2 rounded-full text-sm font-semibold">
+                      Level {course.level} • {course.category}
                     </span>
+                  </div>
+                  <div className="absolute bottom-4 left-4 right-4">
+                    <h2 className="text-3xl font-bold text-white mb-2">{course.title}</h2>
+                    <p className="text-white/90 text-lg">{course.description}</p>
                   </div>
                 </div>
                 
-                <div className="p-6">
-                  <div className="mb-2">
-                    <span className="text-sm text-blue-600 font-semibold">{course.category}</span>
-                  </div>
-                  <h3 className="text-xl font-bold text-gray-900 mb-3">{course.title}</h3>
-                  <p className="text-gray-600 mb-4">{course.description}</p>
-                  
-                  <div className="flex items-center justify-between text-sm text-gray-500">
-                    <div className="flex items-center space-x-4">
-                      <span className="flex items-center">
-                        <svg className="w-4 h-4 mr-1" fill="currentColor" viewBox="0 0 24 24">
-                          <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
-                        </svg>
-                        {course.lessons} Lessons
-                      </span>
-                      <span className="flex items-center">
-                        <svg className="w-4 h-4 mr-1" fill="currentColor" viewBox="0 0 24 24">
-                          <path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
-                        </svg>
-                        {course.practice} Practice
-                      </span>
+                <div className="p-8">
+                  <div className="grid grid-cols-3 gap-6 mb-6">
+                    <div className="text-center">
+                      <div className="text-2xl font-bold text-purple-600">{course.lessons}</div>
+                      <div className="text-gray-600 text-sm">Interactive Lessons</div>
                     </div>
+                    <div className="text-center">
+                      <div className="text-2xl font-bold text-blue-600">{course.practice}</div>
+                      <div className="text-gray-600 text-sm">Practice Problems</div>
+                    </div>
+                    <div className="text-center">
+                      <div className="text-2xl font-bold text-indigo-600">100%</div>
+                      <div className="text-gray-600 text-sm">SwiftUI Focused</div>
+                    </div>
+                  </div>
+                  
+                  <div className="bg-gradient-to-r from-purple-600 to-blue-600 text-white rounded-xl p-4 text-center">
+                    <span className="font-semibold text-lg">Start Your iOS Journey →</span>
                   </div>
                 </div>
               </div>
             </Link>
           ))}
+
+          {/* Progress Indicator */}
+          <div className="bg-white rounded-xl shadow-lg p-6 text-center">
+            <h3 className="text-xl font-semibold text-gray-900 mb-4">Your Learning Path</h3>
+            <div className="flex items-center justify-center space-x-4">
+              <div className="flex items-center space-x-2">
+                <div className="w-3 h-3 bg-green-500 rounded-full"></div>
+                <span className="text-sm text-gray-600">Completed</span>
+              </div>
+              <div className="flex items-center space-x-2">
+                <div className="w-3 h-3 bg-purple-500 rounded-full"></div>
+                <span className="text-sm text-gray-600">In Progress</span>
+              </div>
+              <div className="flex items-center space-x-2">
+                <div className="w-3 h-3 bg-gray-300 rounded-full"></div>
+                <span className="text-sm text-gray-600">Locked</span>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </div>

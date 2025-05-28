@@ -283,16 +283,23 @@ export const CoursePage = () => {
               </div>
 
               <div className="flex flex-col items-center py-8">
-                {currentChapter.lessons.map((lesson, index) => (
-                  <LearningPathNode
-                    key={lesson.id}
-                    lesson={lesson}
-                    isCompleted={lesson.completed}
-                    isActive={index === 0} // First lesson is active by default
-                    onClick={handleLessonClick}
-                    index={index}
-                  />
-                ))}
+                {currentChapter.lessons.map((lesson, index) => {
+                  const isUnlocked = isLessonUnlocked(index);
+                  const isCompleted = lessonProgress[lesson.id] === true;
+                  const isActive = isUnlocked && !isCompleted && (index === 0 || lessonProgress[currentChapter.lessons[index - 1].id]);
+                  
+                  return (
+                    <LearningPathNode
+                      key={lesson.id}
+                      lesson={lesson}
+                      isCompleted={isCompleted}
+                      isActive={isActive}
+                      isLocked={!isUnlocked}
+                      onClick={handleLessonClick}
+                      index={index}
+                    />
+                  );
+                })}
                 
                 {/* Continue Button */}
                 <div className="mt-8 bg-gradient-to-br from-purple-50 to-blue-50 rounded-2xl p-8 text-center max-w-md border border-purple-100">

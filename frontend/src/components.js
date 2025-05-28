@@ -307,9 +307,12 @@ export const InteractiveFeaturesSection = () => {
               Interactive lessons make even complex ideas easy to grasp. 
               Instant, custom feedback accelerates your understanding.
             </p>
-            <button className="bg-green-500 hover:bg-green-600 text-white px-8 py-4 rounded-lg text-lg font-semibold transition-all duration-300 transform hover:scale-105">
+            <Link
+              to="/courses"
+              className="bg-green-500 hover:bg-green-600 text-white px-8 py-4 rounded-lg text-lg font-semibold transition-all duration-300 transform hover:scale-105 inline-block"
+            >
               Start learning
-            </button>
+            </Link>
           </div>
         </div>
       </div>

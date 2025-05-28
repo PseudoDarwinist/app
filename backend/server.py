@@ -119,7 +119,7 @@ async def generate_visualization(request: VisualizationRequest):
                 }
                 
                 # Get concept-specific response or generic one
-                concept_key = request.concept.lower()
+                concept_key = request.concept.lower().strip()
                 if concept_key in fallback_responses:
                     return VisualizationResponse(**fallback_responses[concept_key])
                 else:

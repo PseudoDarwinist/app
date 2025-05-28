@@ -68,4 +68,5 @@ __pycache__/
 
 # Android SDK
 android-sdk/
+/backend/.env/backend/.env
 /backend/.env

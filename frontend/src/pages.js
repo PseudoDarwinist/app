@@ -469,27 +469,30 @@ export const LessonPage = () => {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          prompt: `Create a visual diagram for: ${prompt}`,
+          concept: lesson.title,
+          prompt: `Create an educational diagram showing ${lesson.title} concept in SwiftUI. Make it clean, modern, and easy to understand for iOS developers.`
         }),
       });
 
       if (!response.ok) {
-        throw new Error('Failed to generate image');
+        throw new Error('Failed to generate AI image');
       }
 
       const data = await response.json();
-      setImageUrl(data.imageUrl);
+      if (data.image_base64) {
+        setAiGeneratedImage(data.image_base64);
+        console.log('AI image generated successfully');
+        alert('🎉 AI image generated! Check below the lesson content.');
+      } else {
+        throw new Error('No image data received');
+      }
     } catch (error) {
-      console.error('Error generating image:', error);
-      setError('Failed to generate image. Please try again.');
+      console.error('Error generating AI image:', error);
+      alert('Failed to generate AI image. Please try again.');
     } finally {
       setGeneratingImage(false);
     }
   };
-
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
           concept: lesson.title,
           prompt: `Create an educational diagram showing ${lesson.title} concept in SwiftUI. Make it clean, modern, and easy to understand for iOS developers.`
         }),

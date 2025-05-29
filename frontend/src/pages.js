@@ -493,9 +493,6 @@ export const LessonPage = () => {
       setGeneratingImage(false);
     }
   };
-          concept: lesson.title,
-          prompt: `Create an educational diagram showing ${lesson.title} concept in SwiftUI. Make it clean, modern, and easy to understand for iOS developers.`
-        }),
       });
       
       if (response.ok) {

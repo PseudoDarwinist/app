@@ -13,7 +13,7 @@ try:
     from emergentintegrations.llm.openai.image_generation import OpenAIImageGeneration
 except ImportError:
     # Fallback to our local implementation
-    from emergentintegrations_fallback import LlmChat, UserMessage, OpenAIImageGeneration
+    from backend.emergentintegrations_fallback import LlmChat, UserMessage, OpenAIImageGeneration
 
 # Load environment variables from the backend directory
 env_path = Path(__file__).parent / '.env'

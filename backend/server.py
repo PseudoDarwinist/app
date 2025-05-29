@@ -59,6 +59,10 @@ class ImageResponse(BaseModel):
 async def read_status():
     return {"status": "API is running", "message": "AI Tutor Backend is operational"}
 
+@app.get("/api/health")
+async def health_check():
+    return {"status": "healthy", "message": "SwiftUI learning platform backend is operational"}
+
 @app.post("/api/generate-visualization", response_model=VisualizationResponse)
 async def generate_visualization(request: VisualizationRequest):
     """Generate educational visualization tips and analogies using GPT-4o"""

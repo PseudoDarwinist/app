@@ -6,6 +6,10 @@ import base64
 import asyncio
 from dotenv import load_dotenv
 from pathlib import Path
+import sys
+
+# Add the backend directory to the Python path
+sys.path.append(os.path.dirname(os.path.abspath(__file__)))
 
 # Use our fallback implementation instead of emergentintegrations
 try:
@@ -13,7 +17,7 @@ try:
     from emergentintegrations.llm.openai.image_generation import OpenAIImageGeneration
 except ImportError:
     # Fallback to our local implementation
-    from .emergentintegrations_fallback import LlmChat, UserMessage, OpenAIImageGeneration
+    from emergentintegrations_fallback import LlmChat, UserMessage, OpenAIImageGeneration
 
 # Load environment variables from the backend directory
 env_path = Path(__file__).parent / '.env'

@@ -423,6 +423,40 @@ export const LessonPage = () => {
     }
   };
 
+  const generateDeveloperDoodle = async () => {
+    setGeneratingDoodle(true);
+    try {
+      const backendUrl = process.env.REACT_APP_BACKEND_URL || 'http://localhost:8001';
+      const response = await fetch(`${backendUrl}/api/generate-developer-doodle`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          concept: lesson.title,
+          context: lesson.description
+        }),
+      });
+
+      if (!response.ok) {
+        throw new Error('Failed to generate developer doodle');
+      }
+
+      const data = await response.json();
+      if (data.success) {
+        setAiGeneratedDoodle(data.image_base64);
+        alert('🎉 Developer doodle generated! Check below the lesson content.');
+      } else {
+        throw new Error(data.error || 'Failed to generate doodle');
+      }
+    } catch (error) {
+      console.error('Error generating developer doodle:', error);
+      alert('Failed to generate developer doodle. Please try again.');
+    } finally {
+      setGeneratingDoodle(false);
+    }
+  };
+
   const generateAIImage = async () => {
     setGeneratingImage(true);
     try {

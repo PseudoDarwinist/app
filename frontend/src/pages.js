@@ -479,33 +479,6 @@ export const LessonPage = () => {
     }
   };
 
-  const generateDeveloperDoodle = async () => {
-    setGeneratingDoodle(true);
-    try {
-      const backendUrl = process.env.REACT_APP_BACKEND_URL || 'http://localhost:8001';
-      const response = await fetch(`${backendUrl}/api/generate-doodle`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          prompt: `Create a developer whiteboard sketch for: ${prompt}`,
-        }),
-      });
-
-      if (!response.ok) {
-        throw new Error('Failed to generate doodle');
-      }
-
-      const data = await response.json();
-      setImageUrl(data.imageUrl);
-    } catch (error) {
-      console.error('Error generating doodle:', error);
-      setError('Failed to generate doodle. Please try again.');
-    } finally {
-      setGeneratingDoodle(false);
-    }
-  };
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({

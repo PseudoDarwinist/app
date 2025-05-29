@@ -802,10 +802,6 @@ export const LessonPage = () => {
                       </p>
                     </div>
                   )}
-
-                  {aiGeneratedDoodle && (
-                    <div className="mt-6 bg-white rounded-xl p-6 border border-orange-200">
-                      <h5 className="font-bold text-lg mb-3 text-orange-800">🖊️ Developer Whiteboard Doodle</h5>
                       <p className="text-gray-600 mb-4 text-sm">Raw developer thinking - architectural sketches and system design</p>
                       <div className="relative overflow-hidden rounded-xl bg-gray-50 p-4">
                         <img 

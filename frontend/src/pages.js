@@ -493,7 +493,6 @@ export const LessonPage = () => {
       setGeneratingImage(false);
     }
   };
-  };
 
   const currentPracticeQuestion = lesson.content.practice[currentQuestion];
 

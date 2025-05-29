@@ -815,23 +815,6 @@ export const LessonPage = () => {
                       </p>
                     </div>
                   )}
-
-                  {aiGeneratedDoodle && (
-                    <div className="mt-6 bg-white rounded-xl p-6 border border-orange-200">
-                      <h5 className="font-bold text-lg mb-3 text-orange-800">🖊️ Developer Whiteboard Doodle</h5>
-                      <p className="text-gray-600 mb-4 text-sm">Raw developer thinking - architectural sketches and system design</p>
-                      <div className="relative overflow-hidden rounded-xl bg-gray-50 p-4">
-                        <img 
-                          src={`data:image/png;base64,${aiGeneratedDoodle}`} 
-                          alt={`Developer doodle for ${lesson.title}`}
-                          className="w-full h-auto max-h-96 object-contain"
-                        />
-                      </div>
-                      <p className="text-xs text-gray-500 mt-2 italic">
-                        💡 This shows how a developer might sketch out the concept during planning
-                      </p>
-                    </div>
-                  )}
                 </div>
 
                 {/* Continue to Theory */}

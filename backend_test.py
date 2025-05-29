@@ -25,12 +25,30 @@ def run_tests():
     
     # Test results tracking
     test_results = {
+        "health_check_endpoint": {"success": False, "details": ""},
         "status_endpoint": {"success": False, "details": ""},
         "visualization_endpoint": {"success": False, "details": ""},
         "concept_image_endpoint": {"success": False, "details": ""},
+        "developer_doodle_endpoint": {"success": False, "details": ""},
         "ui_mockup_endpoint": {"success": False, "details": ""},
         "error_handling": {"success": False, "details": ""}
     }
+    
+    # Test 0: Health check endpoint
+    print("\n=== Testing /api/health endpoint ===")
+    try:
+        response = requests.get(f"{backend_url}/api/health")
+        print(f"Status code: {response.status_code}")
+        if response.status_code == 200:
+            print(f"Response: {response.json()}")
+            test_results["health_check_endpoint"]["success"] = True
+            test_results["health_check_endpoint"]["details"] = "Health check endpoint returned successful response"
+        else:
+            print(f"Response: {response.text}")
+            test_results["health_check_endpoint"]["details"] = f"Health check endpoint failed with status code {response.status_code}"
+    except Exception as e:
+        test_results["health_check_endpoint"]["details"] = f"Error testing health check endpoint: {str(e)}"
+        print(f"Error: {str(e)}")
     
     # Test 1: Status endpoint
     print("\n=== Testing /api/status endpoint ===")
@@ -119,7 +137,52 @@ def run_tests():
         test_results["concept_image_endpoint"]["details"] = f"Error testing concept image endpoint: {str(e)}"
         print(f"Error: {str(e)}")
     
-    # Test 4: UI mockup endpoint
+    # Test 4: Developer Doodle endpoint
+    print("\n=== Testing /api/generate-developer-doodle endpoint ===")
+    try:
+        data = {
+            "concept": "SwiftUI Views",
+            "context": "Understanding the basic building blocks of SwiftUI"
+        }
+        response = requests.post(
+            f"{backend_url}/api/generate-developer-doodle",
+            json=data,
+            headers={"Content-Type": "application/json"}
+        )
+        print(f"Status code: {response.status_code}")
+        
+        # Print response but truncate if it's a large image response
+        if response.status_code == 200 and len(response.content) > 1000:
+            response_json = response.json()
+            # If there's an image_base64 field, truncate it for display
+            if "image_base64" in response_json:
+                truncated_response = response_json.copy()
+                truncated_response["image_base64"] = truncated_response["image_base64"][:50] + "... [truncated]"
+                print(f"Response: {truncated_response}")
+            else:
+                print(f"Response: {response_json}")
+        else:
+            print(f"Response: {response.json()}")
+        
+        # Check if the response is successful
+        if response.status_code == 200:
+            response_data = response.json()
+            if "success" in response_data and response_data["success"] and "image_base64" in response_data:
+                test_results["developer_doodle_endpoint"]["success"] = True
+                test_results["developer_doodle_endpoint"]["details"] = "Developer doodle endpoint returned valid response with image"
+            elif "success" in response_data and not response_data["success"] and "error" in response_data and "OpenAI API key" in response_data["error"]:
+                # Fallback handling works correctly
+                test_results["developer_doodle_endpoint"]["success"] = True
+                test_results["developer_doodle_endpoint"]["details"] = "Developer doodle endpoint correctly handled missing API key"
+            else:
+                test_results["developer_doodle_endpoint"]["details"] = "Developer doodle endpoint response missing expected fields"
+        else:
+            test_results["developer_doodle_endpoint"]["details"] = f"Developer doodle endpoint failed with status code {response.status_code}"
+    except Exception as e:
+        test_results["developer_doodle_endpoint"]["details"] = f"Error testing developer doodle endpoint: {str(e)}"
+        print(f"Error: {str(e)}")
+    
+    # Test 5: UI mockup endpoint
     print("\n=== Testing /api/generate-ui-mockup endpoint ===")
     try:
         data = {

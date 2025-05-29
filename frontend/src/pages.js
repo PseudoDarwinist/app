@@ -493,19 +493,6 @@ export const LessonPage = () => {
       setGeneratingImage(false);
     }
   };
-      });
-      
-      if (response.ok) {
-        const data = await response.json();
-        setAiGeneratedImage(data.image_base64);
-      } else {
-        console.error('Failed to generate AI image');
-      }
-    } catch (error) {
-      console.error('Error generating AI image:', error);
-    } finally {
-      setGeneratingImage(false);
-    }
   };
 
   const currentPracticeQuestion = lesson.content.practice[currentQuestion];

@@ -6,7 +6,11 @@ from typing import List, Optional
 import asyncio
 import base64
 import io
-import aiohttp
+try:
+    import aiohttp
+except ImportError:
+    aiohttp = None
+    print("Warning: aiohttp module not found. Some functionality may be limited.")
 
 
 class UserMessage:

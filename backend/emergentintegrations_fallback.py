@@ -36,23 +36,22 @@ class LlmChat:
             self.model = model
         return self
     
-    async def send_message(self, user_message: UserMessage):
+    async def send_message(self, message: UserMessage) -> str:
+        """Send a message and get a response"""
         if not self.client:
-            raise Exception("400: OpenAI API key not configured")
-            
+            return "Error: OpenAI API key not configured"
+        
         try:
             response = await self.client.chat.completions.create(
                 model=self.model,
                 messages=[
                     {"role": "system", "content": self.system_message},
-                    {"role": "user", "content": user_message.text}
-                ],
-                max_tokens=1000,
-                temperature=0.7
+                    {"role": "user", "content": message.text}
+                ]
             )
             return response.choices[0].message.content
         except Exception as e:
-            raise Exception(f"Error in LLM chat: {str(e)}")
+            return f"Error: {str(e)}"
 
 
 class OpenAIImageGeneration:
@@ -62,8 +61,10 @@ class OpenAIImageGeneration:
         # Only create client if we have a valid API key
         if api_key and api_key != "your-openai-api-key-here":
             self.client = openai.AsyncOpenAI(api_key=api_key)
+            print(f"✅ OpenAI client initialized for image generation")
         else:
             self.client = None
+            print(f"❌ Invalid API key for image generation")
     
     async def generate_images(self, prompt: str, model: str = "gpt-4o", number_of_images: int = 1) -> List[bytes]:
         if not self.client:
@@ -102,4 +103,13 @@ class OpenAIImageGeneration:
         except Exception as e:
             print(f"❌ DEBUG: OpenAI Responses API error: {str(e)}")
             print(f"❌ DEBUG: Error type: {type(e)}")
-            raise Exception(f"Error generating image with Responses API: {str(e)}") 
+            raise Exception(f"Error generating image with Responses API: {str(e)}")
+
+
+# For backward compatibility
+def create_llm_chat(api_key: str, session_id: str, system_message: str) -> LlmChat:
+    return LlmChat(api_key, session_id, system_message)
+
+
+def create_image_generation(api_key: str) -> OpenAIImageGeneration:
+    return OpenAIImageGeneration(api_key) 
